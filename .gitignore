@@ -1,0 +1,51 @@
+# Data — downloaded/derived, never committed
+data/raw/
+data/processed/
+data/MANIFEST.json
+outputs/
+runs/
+
+# Reference repos — cloned read-only, never vendored
+reference/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+*.local
+
+# Secrets
+.env
+.env.*
+!.env.example
+*-service-account*.json
+gee-credentials.json
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Job store / scratch
+*.sqlite
+*.sqlite3
+*.db
+scratch/

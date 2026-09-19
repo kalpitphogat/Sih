@@ -1,0 +1,49 @@
+# FloodGuard India — pip requirements (the no-conda path).
+# Everything here has Windows/macOS/Linux wheels as of 2025.
+# Engines that need conda or external binaries (ANUGA, PySPH, Delft3D,
+# DualSPHysics) are NOT listed here; they are optional and their absence is
+# reported truthfully by GET /api/health/engines.
+
+# --- Backend ---
+fastapi>=0.110
+uvicorn[standard]>=0.27
+pydantic>=2.5
+pydantic-settings>=2.1
+python-multipart>=0.0.9
+websockets>=12.0
+httpx>=0.27
+aiosqlite>=0.19
+PyYAML>=6.0
+
+# --- Numerics ---
+numpy>=1.26,<3
+scipy>=1.11
+numba>=0.59
+pandas>=2.1
+
+# --- Geospatial ---
+rasterio>=1.3
+rioxarray>=0.15
+xarray>=2024.1
+netCDF4>=1.6
+zarr>=2.16
+geopandas>=0.14
+shapely>=2.0
+pyproj>=3.6
+fiona>=1.9
+pystac-client>=0.7
+planetary-computer>=1.0
+whitebox>=2.3
+pysheds>=0.3
+
+# --- Remote sensing (Phase 8; inert without credentials) ---
+earthengine-api>=0.1.390
+
+# --- Reporting ---
+matplotlib>=3.8
+reportlab>=4.0
+
+# --- Dev / test ---
+pytest>=8.0
+pytest-asyncio>=0.23
+ruff>=0.3

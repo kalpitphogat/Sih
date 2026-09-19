@@ -1,0 +1,63 @@
+# FloodGuard India — conda environment.
+# Conda is the recommended path because GDAL/ANUGA are painful under pip on some
+# platforms. If you do not have conda, see requirements.txt + docs/INSTALL.md;
+# the core system runs on pip alone, with ANUGA/PySPH degrading to "unavailable"
+# (surfaced honestly by GET /api/health/engines).
+name: floodguard
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+
+  # --- Geospatial core ---
+  - gdal>=3.8
+  - rasterio>=1.3
+  - rioxarray
+  - xarray
+  - netcdf4
+  - zarr
+  - geopandas>=0.14
+  - shapely>=2.0
+  - pyproj
+  - fiona
+  - pystac-client
+  - planetary-computer
+  - richdem
+  - whitebox
+  - pysheds
+
+  # --- Numerics ---
+  - numpy>=1.26
+  - scipy
+  - numba>=0.59
+  - pandas
+
+  # --- Engines (optional; absence is detected, not faked) ---
+  - anuga            # independent validated 2D SWE solver
+  # pysph is installed via pip below (conda build lags)
+
+  # --- Backend ---
+  - fastapi
+  - uvicorn
+  - pydantic>=2.5
+  - websockets
+  - python-multipart
+  - httpx
+  - pyyaml
+  - aiosqlite
+
+  # --- Reporting / plots ---
+  - matplotlib
+  - reportlab
+
+  # --- Dev ---
+  - pytest
+  - pytest-asyncio
+  - ruff
+
+  - pip:
+      - pysph
+      - earthengine-api
+      - geemap
+      - pyrosm

@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "floodguard"
+version = "0.1.0"
+description = "Dam-break / flash-flood hydrodynamic simulation and inundation mapping (SIH PS 26161)"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+floodguard = "floodguard.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["floodguard*", "app*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

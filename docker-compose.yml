@@ -1,0 +1,43 @@
+# FloodGuard India — local stack.
+#
+# NOTE: Docker is not required to run this project. `make setup && make demo`
+# works natively. This file exists for reproducible deployment and for hosting
+# the Delft3D / DualSPHysics engine containers, which are the only components
+# that genuinely need it.
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./docs:/app/docs
+    environment:
+      - FLOODGUARD_DATA_DIR=/app/data
+      - OPENTOPO_API_KEY=${OPENTOPO_API_KEY:-}
+      - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS:-}
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_BASE=http://localhost:8000
+
+  # Dynamic COG tile server, so the browser never downloads a multi-GB raster.
+  tileserver:
+    image: ghcr.io/developmentseed/titiler:latest
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./data:/data:ro
+    environment:
+      - TITILER_API_CORS_ORIGINS=*
