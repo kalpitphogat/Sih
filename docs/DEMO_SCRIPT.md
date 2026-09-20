@@ -99,13 +99,13 @@ Go to **About**, scroll to Validation. Or open `docs/validation/ritter_dam_break
 
 > "This is the single most important slide. The black line is Ritter's 1892
 > analytical solution for a dam break on a dry bed. The dashed blue line is our
-> solver. Relative L2 error **0.305%**."
+> solver. Relative L2 error **0.503%**."
 
 > "Stoker's wet-bed solution — which produces a real shock, so it tests the
-> Riemann solver rather than just the rarefaction — **0.725%**, shock located
-> within **0.4 cells**."
+> Riemann solver rather than just the rarefaction — **1.101%**, shock located
+> within **0.06 cells**."
 
-> "Lake at rest over rough terrain: spurious velocity **3.9 × 10⁻¹²** m/s. A
+> "Lake at rest over rough terrain: spurious velocity **3.92 × 10⁻¹²** m/s. A
 > scheme that isn't well-balanced produces metres per second of flow that
 > doesn't exist, on every slope of a Himalayan DEM."
 
@@ -185,7 +185,7 @@ Then turn it into a positive:
 Two answers, in this order.
 
 > "The numerics, we can prove: seven checks against exact analytical solutions,
-> Ritter at 0.305% L2. `make validate` runs them in under a minute."
+> Ritter at 0.503% L2. `make validate` runs them in under a minute."
 
 > "The inputs, we can't prove — so we qualify them. The reservoir bathymetry is
 > reconstructed, not surveyed; the DEM is a surface model that reads canopy top;

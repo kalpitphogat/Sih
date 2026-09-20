@@ -304,12 +304,12 @@ Run with `make validate`. All seven checks pass; plots and error tables are in
 
 | Check | Result |
 | --- | --- |
-| Ritter dry-bed dam break | relative L2 **0.305%**, h(dam) error **0.94%**, front lag 18.3% |
-| Stoker wet-bed dam break | relative L2 **0.725%**, shock within **0.4 cells** |
-| Lake at rest, irregular bed | spurious discharge **3.9e-12**, surface drift **1.4e-14 m** |
-| Mass conservation, fully wet | relative error **5.2e-16** |
+| Ritter dry-bed dam break | relative L2 **0.503%**, h(dam) error **1.90%**, front lag 21.1% |
+| Stoker wet-bed dam break | relative L2 **1.101%**, shock within **0.06 cells** |
+| Lake at rest, irregular bed | spurious discharge **3.92e-12**, surface drift **1.42e-14 m** |
+| Mass conservation, fully wet | relative error **1.72e-16** |
 | Wet/dry mass budget | **0.002%** loss |
-| Grid convergence (Ritter) | observed order **0.91** |
+| Grid convergence (Ritter) | observed order **0.92** |
 | Frictional dam break | front retarded, never outruns Ritter |
 
 Notes on interpretation:
