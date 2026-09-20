@@ -138,6 +138,12 @@ class DomainSpec(BaseModel):
     reach_length_km: float = Field(default=120.0, gt=0)
     #: Lateral buffer either side of the valley centreline, km.
     corridor_buffer_km: float = Field(default=5.0, gt=0)
+    #: Buffer around the dam that must contain the reservoir pool, km.
+    #: The reservoir lies UPSTREAM of the dam, so an AOI derived only from the
+    #: dam and its downstream towns excludes it entirely — and a reservoir that
+    #: is not in the DEM cannot supply the water that drives the breach.
+    #: Tehri's pool reaches ~45 km up the Bhagirathi; 40 km is a safe default.
+    reservoir_buffer_km: float = Field(default=40.0, gt=0)
     #: Compute grid resolution, m. Dam-break peaks are resolution-sensitive:
     #: this is exposed deliberately rather than hidden.
     resolution_m: float = Field(default=30.0, gt=0)
