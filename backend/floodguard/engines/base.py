@@ -152,6 +152,16 @@ class EngineInput:
     #: difference between a tractable run and an intractable one.
     source_cells: list[tuple[int, int, float]] = field(default_factory=list)
 
+    #: Unit vector (d_row, d_col) pointing downstream at the breach.
+    #:
+    #: Water leaving a breach is already moving at several metres per second.
+    #: Adding its mass with zero momentum instead builds a static column that
+    #: then collapses radially — an artificial second dam break at the source.
+    #: On the real Tehri case that column reached 86 m, drove the timestep down
+    #: to 0.08 s, and the wave never left the release cells. Injecting the mass
+    #: with the momentum it physically carries removes the artefact entirely.
+    source_direction: tuple[float, float] = (0.0, 1.0)
+
     #: Initial depth field. None means a dry bed everywhere.
     initial_depth: np.ndarray | None = None
 

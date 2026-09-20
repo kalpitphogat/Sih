@@ -22,8 +22,6 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
 
 _PHASE_OF = {
-    "impact": ("Phase 6", "floodguard.impact"),
-    "report": ("Phase 10", "PDF report generator"),
     "demo": ("Phase 10", "precomputed demo bundle"),
 }
 
@@ -36,7 +34,11 @@ def _setup_logging(verbose: bool) -> None:
     )
 
 
-def _load_scenario(path: str | None, resolution_m: float | None = None):
+def _load_scenario(
+    path: str | None,
+    resolution_m: float | None = None,
+    duration_hours: float | None = None,
+):
     """Load a scenario, optionally overriding the compute resolution.
 
     Resolution is the single biggest lever on runtime AND on the answer. Cost
@@ -53,9 +55,12 @@ def _load_scenario(path: str | None, resolution_m: float | None = None):
     if not path:
         raise SystemExit("--scenario is required for this command")
     scenario = Scenario.from_yaml(path)
-    if resolution_m:
+    if resolution_m or duration_hours:
         scenario = scenario.model_copy(deep=True)
+    if resolution_m:
         scenario.domain.resolution_m = resolution_m
+    if duration_hours:
+        scenario.solver.duration_hours = duration_hours
     return scenario
 
 
@@ -233,7 +238,7 @@ def cmd_simulate(args) -> int:
     """Phases 2-5: the full headless pipeline for one scenario."""
     from floodguard.pipeline import simulate
 
-    scenario = _load_scenario(args.scenario, args.resolution)
+    scenario = _load_scenario(args.scenario, args.resolution, args.duration)
     data_dir = Path(args.data_dir or DEFAULT_DATA_DIR)
 
     print(f"Resolution: {scenario.domain.resolution_m:.0f} m "
@@ -257,6 +262,74 @@ def cmd_simulate(args) -> int:
     )
     print()
     print(result.summary())
+    return 0
+
+
+def cmd_report(args) -> int:
+    """Phase 10: render the PDF report for a completed run."""
+    from floodguard.report import build_report, write_map_previews
+
+    data_dir = Path(args.data_dir or DEFAULT_DATA_DIR)
+    runs = data_dir / "runs"
+    run_dir = Path(args.run) if args.run else None
+
+    if run_dir is None:
+        candidates = sorted(
+            (d for d in runs.glob("*") if (d / "result.json").exists()),
+            key=lambda d: d.stat().st_mtime,
+        )
+        if not candidates:
+            print(
+                f"No completed run found under {runs}. Run `floodguard simulate` first.",
+                file=sys.stderr,
+            )
+            return 2
+        run_dir = candidates[-1]
+    elif not run_dir.is_absolute():
+        run_dir = runs / run_dir
+
+    previews = write_map_previews(run_dir)
+    for p in previews:
+        print(f"  rendered {p.name}")
+
+    out = build_report(run_dir)
+    print(f"Report: {out} ({out.stat().st_size / 1024:.0f} KB)")
+    return 0
+
+
+def cmd_impact(args) -> int:
+    """Phase 6: print the exposure analysis for a completed run."""
+    import json
+
+    data_dir = Path(args.data_dir or DEFAULT_DATA_DIR)
+    runs = data_dir / "runs"
+    run_dir = Path(args.run) if args.run else None
+    if run_dir is None:
+        candidates = sorted(
+            (d for d in runs.glob("*") if (d / "impact.json").exists()),
+            key=lambda d: d.stat().st_mtime,
+        )
+        if not candidates:
+            print(f"No run with impact.json under {runs}.", file=sys.stderr)
+            return 2
+        run_dir = candidates[-1]
+    elif not run_dir.is_absolute():
+        run_dir = runs / run_dir
+
+    path = run_dir / "impact.json"
+    if not path.exists():
+        print(f"{path} does not exist.", file=sys.stderr)
+        return 2
+
+    data = json.loads(path.read_text(encoding="utf-8"))
+    print(f"Exposure within the inundated area ({run_dir.name})")
+    for m in data["metrics"].values():
+        unit = f" {m['unit']}" if m["computed"] and m["unit"] else ""
+        print(f"  {m['label']:<26} {m['display']}{unit}")
+        if not m["computed"]:
+            print(f"  {'':<26} (not computed: {m['reason']})")
+    for w in data.get("warnings", []):
+        print(f"\n  WARNING: {w}")
     return 0
 
 
@@ -325,8 +398,19 @@ def build_parser() -> argparse.ArgumentParser:
         "--resolution", type=float,
         help="compute grid resolution in metres, overriding the scenario",
     )
+    p_sim.add_argument(
+        "--duration", type=float, help="simulated duration in hours, overriding the scenario"
+    )
     p_sim.add_argument("--engines", help="comma-separated engine ids, e.g. swe_fv,delft3d")
     p_sim.add_argument("--no-export", action="store_true")
+
+    p_report = sub.add_parser("report", help="[Phase 10] render the PDF report for a run")
+    p_report.add_argument("--run", help="run id or directory; defaults to the most recent")
+    p_report.add_argument("--data-dir")
+
+    p_impact = sub.add_parser("impact", help="[Phase 6] print the exposure analysis")
+    p_impact.add_argument("--run")
+    p_impact.add_argument("--data-dir")
 
     p_val = sub.add_parser("validate", help="[Phase 4.5] Ritter/Stoker/lake-at-rest/mass balance")
     p_val.add_argument("--out")
@@ -349,6 +433,8 @@ DISPATCH = {
     "validate": cmd_validate,
     "breach": cmd_breach,
     "simulate": cmd_simulate,
+    "report": cmd_report,
+    "impact": cmd_impact,
 }
 
 

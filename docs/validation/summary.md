@@ -4,7 +4,7 @@ Verification asks whether the code solves the equations it claims to solve.
 These are analytical solutions and closed-form invariants, so the answers are
 exact and the comparison is not a matter of opinion.
 
-**7 of 7 checks passed** (137.3s).
+**7 of 7 checks passed** (79.8s).
 
 | Check | Result | Criterion |
 | --- | --- | --- |
@@ -12,7 +12,7 @@ exact and the comparison is not a matter of opinion.
 | Stoker wet-bed dam break | PASS | relative L2 1.101% < 5%, shock within 0.1 < 12 cells |
 | Lake at rest over irregular bed (well-balancedness) | PASS | spurious discharge 3.92e-12 < 1e-10, surface drift 1.42e-14 m < 1e-10 |
 | Mass conservation, no wet/dry front | PASS | relative volume error 1.72e-16 < 1e-9 |
-| Wet/dry mass budget (measured cost of drying) | PASS | relative mass loss 0.000% < 1% |
+| Wet/dry mass budget (measured cost of drying) | PASS | relative mass loss 0.002% < 1% |
 | Grid convergence (Ritter) | PASS | observed order 0.92 > 0.8 and error decreases with dx |
 | Frictional dam break (front retardation) | PASS | rough front 1175 m < frictionless 1318 m <= Ritter 1396 m |
 
@@ -108,7 +108,7 @@ Water is given an initial momentum so it sloshes against the walls; a static tes
 
 ### Wet/dry mass budget (measured cost of drying)
 
-**PASS** — relative mass loss 0.000% < 1%
+**PASS** — relative mass loss 0.002% < 1%
 
 This is not a conservation failure to be fixed; it is the price of a wet/dry treatment, quantified. The number is reported alongside every simulation so a reviewer can see what it cost on their own case.
 
@@ -117,10 +117,10 @@ This is not a conservation failure to be fixed; it is the price of a wet/dry tre
 ```json
 {
   "initial_volume_m3": 28275583.999999996,
-  "final_volume_m3": 28275484.975314595,
-  "relative_loss": 3.502126972920152e-06,
-  "drying_events": 74,
-  "theoretical_bound": 1.0468395630661422e-06,
+  "final_volume_m3": 28276092.765054666,
+  "relative_loss": 1.7993087416664187e-05,
+  "drying_events": 262,
+  "theoretical_bound": 3.706377912477423e-06,
   "dry_tolerance_m": 0.001,
   "shoreline_cells_initial": 140,
   "steps": 300

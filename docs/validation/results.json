@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_s": 137.29493470001034,
+  "runtime_s": 79.81424990016967,
   "checks": [
     {
       "name": "Ritter dry-bed dam break",
@@ -77,13 +77,13 @@
     {
       "name": "Wet/dry mass budget (measured cost of drying)",
       "passed": 1.0,
-      "threshold": "relative mass loss 0.000% < 1%",
+      "threshold": "relative mass loss 0.002% < 1%",
       "metrics": {
         "initial_volume_m3": 28275583.999999996,
-        "final_volume_m3": 28275484.975314595,
-        "relative_loss": 3.502126972920152e-06,
-        "drying_events": 74,
-        "theoretical_bound": 1.0468395630661422e-06,
+        "final_volume_m3": 28276092.765054666,
+        "relative_loss": 1.7993087416664187e-05,
+        "drying_events": 262,
+        "theoretical_bound": 3.706377912477423e-06,
         "dry_tolerance_m": 0.001,
         "shoreline_cells_initial": 140,
         "steps": 300

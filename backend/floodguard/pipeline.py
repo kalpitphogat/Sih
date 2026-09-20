@@ -99,6 +99,7 @@ class SimulationResult:
     exported: list[exports.ExportResult] = field(default_factory=list)
     hazard_stats: dict[str, Any] = field(default_factory=dict)
     town_results: list[dict[str, Any]] = field(default_factory=list)
+    impact: dict[str, Any] | None = None
     runtime_s: float = 0.0
     warnings: list[str] = field(default_factory=list)
 
@@ -194,6 +195,7 @@ class SimulationResult:
             "engines": [r.to_dict() for r in self.engine_runs],
             "hazard": self.hazard_stats,
             "towns": self.town_results,
+            "impact": self.impact,
             "exports": [e.to_dict() for e in self.exported],
             "warnings": self.warnings,
         }
@@ -363,6 +365,36 @@ def breach_face_cells(
     return cells or [(r0, c0, 1.0)]
 
 
+def downstream_direction(
+    path_rc: np.ndarray,
+    row_offset: int,
+    col_offset: int,
+    release_rc: tuple[int, int],
+    window: int = 12,
+) -> tuple[float, float]:
+    """Unit vector pointing downstream at the release point, in grid coordinates.
+
+    Taken as the chord across a window of the traced flow path rather than a
+    single D8 step, because a D8 step is quantised to 45 degrees and would send
+    the breach outflow off at an angle to the actual valley.
+    """
+    if len(path_rc) < 2:
+        return (0.0, 1.0)
+
+    local = np.asarray(path_rc, dtype=np.float64) - np.array([row_offset, col_offset])
+    distances = np.hypot(local[:, 0] - release_rc[0], local[:, 1] - release_rc[1])
+    start = int(np.argmin(distances))
+    end = min(start + window, len(local) - 1)
+    if end <= start:
+        start, end = max(end - window, 0), end
+
+    chord = local[end] - local[start]
+    norm = float(np.hypot(chord[0], chord[1]))
+    if norm < 1e-9:
+        return (0.0, 1.0)
+    return (float(chord[0] / norm), float(chord[1] / norm))
+
+
 def _build_engine_input(
     scenario: Scenario,
     pre: PreprocessResult,
@@ -397,6 +429,7 @@ def _build_engine_input(
     )
 
     face = breach_face_cells(active, src_cropped, breach_width_m, pre.cell_size_m)
+    direction = downstream_direction(pre.path_rc, rs.start, cs.start, src_cropped)
 
     spec = EngineInput(
         bed_elevation=bed,
@@ -407,6 +440,7 @@ def _build_engine_input(
         crs=pre.crs,
         source_rc=src_cropped,
         source_cells=face,
+        source_direction=direction,
         inflow_q=hydrograph.q_at,
         inflow_volume_m3=hydrograph.total_volume_m3,
         duration_s=scenario.solver.duration_hours * 3600.0,
@@ -622,6 +656,12 @@ def simulate(
             out_dir, bundle, pre, provenance, hydrograph, scenario, primary
         )
 
+    # --- Phase 6: HADR exposure ---
+    progress(fraction=0.93, phase="impact", message="intersecting the exposure layers")
+    result.impact = _run_impact(scenario, bundle, data_dir, out_dir, provenance)
+    if result.impact:
+        warnings.extend(result.impact.get("warnings", []))
+
     (out_dir / "result.json").write_text(
         json.dumps(result.to_dict(), indent=2, default=str), encoding="utf-8"
     )
@@ -629,6 +669,68 @@ def simulate(
     result.runtime_s = time.perf_counter() - started
     progress(fraction=1.0, phase="done", message=f"complete in {result.runtime_s:.1f}s")
     return result
+
+
+def _run_impact(
+    scenario: Scenario,
+    bundle: ResultBundle,
+    data_dir: Path,
+    out_dir: Path,
+    provenance: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Intersect the inundation with whatever exposure layers were fetched.
+
+    Layers that are absent produce "not computed" metrics naming the reason, so
+    a missing OSM download is never rendered as a building count of zero.
+    """
+    from floodguard.impact import exposure
+
+    raw = data_dir / "raw"
+    osm_dir = raw / "osm" / scenario.id
+    osm_layers = {
+        path.stem: path
+        for path in osm_dir.glob("*.geojson")
+        if not path.name.endswith(".raw.json")
+    } if osm_dir.exists() else {}
+
+    population = next(iter((raw / "population" / "worldpop").glob("*.tif")), None)
+    population_note = ""
+    if population is not None:
+        from floodguard.data.population import WORLDPOP_LICENCE, PopulationRaster
+
+        population_note = PopulationRaster(
+            population, "WorldPop constrained UN-adjusted", WORLDPOP_LICENCE,
+            100.0, "EPSG:4326", 2020, [],
+        ).assumption_note()
+
+    try:
+        result = exposure.analyse(
+            bundle.max_depth,
+            bundle.max_velocity,
+            bundle.arrival_time_s,
+            bundle.transform,
+            bundle.crs,
+            bundle.cell_size_m,
+            osm_layers=osm_layers,
+            population_raster=population,
+            population_note=population_note,
+            towns=scenario.towns,
+            wet_threshold_m=scenario.solver.wet_threshold_m,
+        )
+    except Exception as exc:  # noqa: BLE001 - impact must not sink the whole run
+        log.exception("impact analysis failed")
+        return {
+            "metrics": {},
+            "warnings": [f"Impact analysis failed: {type(exc).__name__}: {exc}"],
+            "provenance": {},
+        }
+
+    payload = result.to_dict()
+    payload["provenance"] |= {"run_provenance": provenance.get("run_id")}
+    (out_dir / "impact.json").write_text(
+        json.dumps(payload, indent=2, default=str), encoding="utf-8"
+    )
+    return payload
 
 
 def _write_exports(

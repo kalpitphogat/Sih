@@ -105,10 +105,16 @@ class ShallowWaterFV(Engine):
         source_rows = np.array([r for r, _, _ in source_cells], dtype=np.int64)
         source_cols = np.array([c for _, c, _ in source_cells], dtype=np.int64)
         source_weights = np.array([w for _, _, w in source_cells], dtype=np.float64)
+        dir_row, dir_col = spec.source_direction
+        norm = float(np.hypot(dir_row, dir_col)) or 1.0
+        dir_row, dir_col = dir_row / norm, dir_col / norm
+
         log.info(
-            "breach discharges through %d cell(s) (%.0f m2 of face)",
+            "breach discharges through %d cell(s) (%.0f m2 of face) towards (%.2f, %.2f)",
             len(source_cells),
             len(source_cells) * cell_area,
+            dir_row,
+            dir_col,
         )
 
         frames: list[tuple[float, np.ndarray]] = []
@@ -140,9 +146,22 @@ class ShallowWaterFV(Engine):
             q = spec.inflow_q(t + 0.5 * dt)
             if q > 0.0:
                 # Spread over the breach face, weighted. Adding the total to one
-                # cell would create a water column tens of metres tall in a
+                # cell would build a water column tens of metres tall in a
                 # single step and stall the timestep.
-                h[source_rows, source_cols] += source_weights * (q * dt / cell_area)
+                added = source_weights * (q * dt / cell_area)
+                h[source_rows, source_cols] += added
+
+                # ...and give it the momentum it physically carries. Flow
+                # through a breach is at or near critical, so the outflow speed
+                # is about sqrt(g*h) over the flow depth at the opening. Adding
+                # the mass with zero momentum instead makes a static column that
+                # collapses radially: an artificial second dam break at the
+                # source, which is what the wave then propagates.
+                depth_here = h[source_rows, source_cols]
+                speed = np.sqrt(9.81 * np.maximum(depth_here, 0.0))
+                hu[source_rows, source_cols] += added * speed * dir_row
+                hv[source_rows, source_cols] += added * speed * dir_col
+
                 volume_in += q * dt
 
             dt = self._step(
@@ -275,6 +294,11 @@ class ShallowWaterFV(Engine):
                 "volume_introduced_m3": volume_in,
                 "breach_source_cells": len(source_cells),
                 "breach_source_area_m2": len(source_cells) * cell_area,
+                "breach_source_direction": [dir_row, dir_col],
+                "breach_inflow_momentum": (
+                    "mass injected with critical-flow velocity sqrt(g*h) along the "
+                    "traced downstream direction"
+                ),
                 "volume_remaining_m3": final_volume,
                 "mass_error": float(mass_error),
                 "cells_dried_by_positivity": cells_dried,
@@ -367,6 +391,7 @@ class ShallowWaterFV(Engine):
     def _step(
         h, hu, hv, z, manning, active, work, dx, dy, dt_max, dry_tol, second_order,
         open_edges=True, max_speed=120.0, positivity_safety=0.5,
+        significant_depth=None,
     ):
         """One SSP-RK2 step with a positivity-limited timestep. Returns dt used.
 
@@ -379,9 +404,13 @@ class ShallowWaterFV(Engine):
             h, hu, hv, z, manning, active, work, dx, dy, dry_tol, second_order,
             open_edges,
         )
+        # Only depths that matter may constrain the step; see positivity_dt.
+        threshold = significant_depth if significant_depth is not None else max(
+            100.0 * dry_tol, 0.05
+        )
         dt = min(
             dt_max,
-            positivity_safety * k.positivity_dt(h, work.dh, active, dry_tol),
+            positivity_safety * k.positivity_dt(h, work.dh, active, threshold),
         )
         if not second_order:
             ShallowWaterFV._apply(h, hu, hv, work, active, dt, dry_tol, max_speed)

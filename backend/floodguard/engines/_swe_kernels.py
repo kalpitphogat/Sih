@@ -759,7 +759,7 @@ def rk2_average(h, hu, hv, h0, hu0, hv0, active, dry_tol):
 
 
 @njit(cache=True)
-def positivity_dt(h, dh, active, dry_tol):
+def positivity_dt(h, dh, active, significant_depth):
     """Largest dt for which no wet cell is driven to negative depth.
 
     The CFL condition bounds the wave speed, but it does not bound how much
@@ -774,6 +774,14 @@ def positivity_dt(h, dh, active, dry_tol):
     the loss bounded by the dry tolerance again, which is the only mass error a
     wet/dry scheme should have.
 
+    `significant_depth` is the depth below which a cell is allowed to be
+    clipped rather than constrain the whole domain. Applying the limit to every
+    wet cell instead lets a single millimetre-deep cell at the front — draining
+    at a perfectly ordinary rate — collapse the global timestep by an order of
+    magnitude, while the water it would save is negligible. The mass that
+    clipping costs is measured and reported by the wet/dry budget check, so
+    this is a bounded, quantified trade rather than a hidden one.
+
     Returns a large value when nothing is draining fast enough to matter.
     """
     rows, cols = h.shape
@@ -783,7 +791,7 @@ def positivity_dt(h, dh, active, dry_tol):
             if not active[r, c]:
                 continue
             depth = h[r, c]
-            if depth <= dry_tol:
+            if depth <= significant_depth:
                 continue
             drain = -dh[r, c]
             if drain <= 0.0:
