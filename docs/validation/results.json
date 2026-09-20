@@ -1,27 +1,27 @@
 {
   "passed": true,
-  "runtime_s": 5.416251099901274,
+  "runtime_s": 137.29493470001034,
   "checks": [
     {
       "name": "Ritter dry-bed dam break",
       "passed": 1.0,
-      "threshold": "relative L2 0.305% < 5%, h(dam) error 0.94% < 5%, front lag 18.3% in [0%, 25%)",
+      "threshold": "relative L2 0.503% < 5%, h(dam) error 1.90% < 5%, front lag 21.1% in [0%, 25%)",
       "metrics": {
-        "L1": 15.109891703070657,
-        "L2": 0.9255161886314835,
-        "Linf": 0.17278879434349825,
-        "RMSE": 0.020695171120565153,
-        "relative_L2": 0.0030500718722684277,
-        "n_cells": 800,
-        "dam_depth_m": 4.486356806264114,
+        "L1": 27.64760703751184,
+        "L2": 1.5250615158840306,
+        "Linf": 0.2632832962897229,
+        "RMSE": 0.03410141219385568,
+        "relative_L2": 0.005025879222142668,
+        "n_cells": 400,
+        "dam_depth_m": 4.528900850861707,
         "dam_depth_expected_m": 4.444444444444445,
-        "dam_depth_error_pct": 0.9430281409425589,
-        "front_numerical_m": 1323.75,
+        "dam_depth_error_pct": 1.9002691443883934,
+        "front_numerical_m": 1312.5,
         "front_analytical_m": 1396.1817764612601,
-        "front_lag_fraction": 0.18282460417091584,
+        "front_lag_fraction": 0.2112206603966369,
         "front_threshold_m": 0.01,
         "t_s": 20.0,
-        "dx_m": 2.5
+        "dx_m": 5.0
       },
       "note": "The front lag is expected and is documented, not a defect: a monotone second-order scheme cannot resolve the infinite-gradient tip where depth reaches zero. It must never LEAD the analytical front, which would mean the wave is arriving too early.",
       "plot": "ritter_dam_break.png"
@@ -29,17 +29,17 @@
     {
       "name": "Stoker wet-bed dam break",
       "passed": true,
-      "threshold": "relative L2 0.725% < 5%, shock within 0.4 < 12 cells",
+      "threshold": "relative L2 1.101% < 5%, shock within 0.1 < 12 cells",
       "metrics": {
-        "L1": 12.80354812864486,
-        "L2": 2.277692556472453,
-        "Linf": 1.1398026757823256,
-        "RMSE": 0.05093075388117684,
-        "relative_L2": 0.007250609421213781,
-        "n_cells": 800,
-        "shock_numerical_m": 1188.75,
+        "L1": 26.13954448652759,
+        "L2": 3.4601511829788123,
+        "Linf": 1.3042341201156074,
+        "RMSE": 0.07737133257566937,
+        "relative_L2": 0.011011700174514727,
+        "n_cells": 400,
+        "shock_numerical_m": 1187.5,
         "shock_analytical_m": 1187.7969741217005,
-        "shock_error_cells": 0.38121035131980535,
+        "shock_error_cells": 0.05939482434009733,
         "shock_speed_ms": 9.389848706085026,
         "t_s": 20.0
       },
@@ -63,11 +63,11 @@
     {
       "name": "Mass conservation, no wet/dry front",
       "passed": true,
-      "threshold": "relative volume error 5.16e-16 < 1e-9",
+      "threshold": "relative volume error 1.72e-16 < 1e-9",
       "metrics": {
         "initial_volume_m3": 346639999.9999999,
-        "final_volume_m3": 346639999.9999997,
-        "relative_error": 5.158491066413914e-16,
+        "final_volume_m3": 346639999.9999998,
+        "relative_error": 1.7194970221379716e-16,
         "steps": 300,
         "dried_cells": 0
       },
@@ -80,8 +80,8 @@
       "threshold": "relative mass loss 0.000% < 1%",
       "metrics": {
         "initial_volume_m3": 28275583.999999996,
-        "final_volume_m3": 28275484.9753146,
-        "relative_loss": 3.5021269727884025e-06,
+        "final_volume_m3": 28275484.975314595,
+        "relative_loss": 3.502126972920152e-06,
         "drying_events": 74,
         "theoretical_bound": 1.0468395630661422e-06,
         "dry_tolerance_m": 0.001,
@@ -94,27 +94,24 @@
     {
       "name": "Grid convergence (Ritter)",
       "passed": true,
-      "threshold": "observed order 0.91 > 0.8 and error decreases with dx",
+      "threshold": "observed order 0.92 > 0.8 and error decreases with dx",
       "metrics": {
         "resolutions": [
           100,
           200,
-          400,
-          800
+          400
         ],
         "dx_m": [
           20.0,
           10.0,
-          5.0,
-          2.5
+          5.0
         ],
         "L1_errors": [
           99.31056553054532,
           53.28398803888703,
-          27.64760703751184,
-          15.109891703070657
+          27.64760703751184
         ],
-        "observed_order": 0.9095909124049657
+        "observed_order": 0.922396297563073
       },
       "note": "Second order is not attainable on a discontinuous solution; roughly first order in L1 is the expected and correct result at a shock.",
       "plot": "grid_convergence.png"

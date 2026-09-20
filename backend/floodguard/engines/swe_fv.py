@@ -277,26 +277,28 @@ class ShallowWaterFV(Engine):
         k.primitives(h, hu, hv, z, w.eta, w.u, w.v, active, dry_tol)
 
         if second_order:
-            k.compute_slopes(w.eta, w.s_eta_x, w.s_eta_y, active)
-            k.compute_slopes(w.u, w.s_u_x, w.s_u_y, active)
-            k.compute_slopes(w.v, w.s_v_x, w.s_v_y, active)
-            np.copyto(w.s_z_x, w.s_z_x_base)
-            np.copyto(w.s_z_y, w.s_z_y_base)
-
-            # First order at the wet/dry front, or the reconstruction pushes a
-            # film ahead of the physical wave. See the kernel docstring.
+            # One fused pass: limited slopes for eta, u, v and the bed, with
+            # the wet/dry test applied to all four together.
             #
-            # The BED slopes must be limited on exactly the same cells. The
-            # interface depth is h_int = eta_int - z_int, and over dry ground
-            # eta == z, so the two reconstructions cancel only while they use
-            # the same slope. Zeroing the eta slope alone leaves
-            # h_int = -0.5 * s_z, which is positive wherever the bed falls —
-            # water conjured out of the terrain gradient. That defect filled a
-            # test domain to 75 m depth with the inflow switched off.
-            k.zero_slopes_at_wet_dry(w.s_eta_x, w.s_eta_y, h, active, dry_tol)
-            k.zero_slopes_at_wet_dry(w.s_u_x, w.s_u_y, h, active, dry_tol)
-            k.zero_slopes_at_wet_dry(w.s_v_x, w.s_v_y, h, active, dry_tol)
-            k.zero_slopes_at_wet_dry(w.s_z_x, w.s_z_y, h, active, dry_tol)
+            # The BED slopes must be limited on exactly the same cells as the
+            # water surface. The interface depth is h_int = eta_int - z_int,
+            # and over dry ground eta == z, so the two reconstructions cancel
+            # only while they use the same slope. Zeroing the eta slope alone
+            # leaves h_int = -0.5 * s_z, which is positive wherever the bed
+            # falls — water conjured out of the terrain gradient. That defect
+            # filled a test domain to 75 m depth with the inflow switched off.
+            k.reconstruct(
+                w.eta, w.u, w.v, h, z,
+                w.s_eta_x, w.s_eta_y, w.s_u_x, w.s_u_y, w.s_v_x, w.s_v_y,
+                w.s_z_x, w.s_z_y, w.s_z_x_base, w.s_z_y_base,
+                active, dry_tol,
+            )
+        else:
+            for arr in (
+                w.s_eta_x, w.s_eta_y, w.s_u_x, w.s_u_y,
+                w.s_v_x, w.s_v_y, w.s_z_x, w.s_z_y,
+            ):
+                arr.fill(0.0)
 
         k.flux_sweep(
             h, hu, hv, z,
@@ -304,6 +306,7 @@ class ShallowWaterFV(Engine):
             w.s_eta_x, w.s_u_x, w.s_v_x, w.s_z_x,
             w.s_eta_y, w.s_u_y, w.s_v_y, w.s_z_y,
             w.dh, w.dhu, w.dhv,
+            w.fy0, w.fy1, w.fy2, w.fy3,
             active, dx, dy, dry_tol, second_order,
         )
         # Faces with no active neighbour carry no flux from the sweep above, so
@@ -360,7 +363,7 @@ class ShallowWaterFV(Engine):
             ShallowWaterFV._apply(h, hu, hv, work, active, dt, dry_tol, max_speed)
             return dt
 
-        h0, hu0, hv0 = h.copy(), hu.copy(), hv.copy()
+        k.save_state(h, hu, hv, work.h0, work.hu0, work.hv0, active)
         ShallowWaterFV._apply(h, hu, hv, work, active, dt, dry_tol, max_speed)
 
         # Stage 2, then average. This is what makes the scheme second-order in
@@ -372,15 +375,7 @@ class ShallowWaterFV(Engine):
         )
         ShallowWaterFV._apply(h, hu, hv, work, active, dt, dry_tol, max_speed)
 
-        h *= 0.5
-        hu *= 0.5
-        hv *= 0.5
-        h += 0.5 * h0
-        hu += 0.5 * hu0
-        hv += 0.5 * hv0
-        h[h < dry_tol] = 0.0
-        hu[h <= 0.0] = 0.0
-        hv[h <= 0.0] = 0.0
+        k.rk2_average(h, hu, hv, work.h0, work.hu0, work.hv0, active, dry_tol)
         return dt
 
 
@@ -401,6 +396,11 @@ class Work:
         # static pair plus a per-stage working pair.
         "s_z_x_base", "s_z_y_base",
         "dh", "dhu", "dhv",
+        # Temporary y-face fluxes, so the y sweep can run row-major. See
+        # _swe_kernels.flux_sweep for why that matters.
+        "fy0", "fy1", "fy2", "fy3",
+        # Persistent RK2 stage buffers, so the average allocates nothing.
+        "h0", "hu0", "hv0",
         "counters",
     )
 

@@ -22,7 +22,6 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
 
 _PHASE_OF = {
-    "simulate": ("Phase 4/5", "floodguard.engines + postprocess"),
     "impact": ("Phase 6", "floodguard.impact"),
     "report": ("Phase 10", "PDF report generator"),
     "demo": ("Phase 10", "precomputed demo bundle"),
@@ -37,12 +36,27 @@ def _setup_logging(verbose: bool) -> None:
     )
 
 
-def _load_scenario(path: str | None):
+def _load_scenario(path: str | None, resolution_m: float | None = None):
+    """Load a scenario, optionally overriding the compute resolution.
+
+    Resolution is the single biggest lever on runtime AND on the answer. Cost
+    scales roughly as 1/res^3 — 1/res^2 in cells and another 1/res in timesteps,
+    since the CFL limit shrinks with the cell size. Going from 90 m to 30 m is
+    about 27x the work. It is also not merely a quality knob: dam-break peak
+    depths are genuinely resolution-sensitive, because a coarse cell averages
+    the channel together with its banks and under-predicts the peak. That is
+    why the spec insists it be exposed rather than hidden, and why every output
+    records the resolution it was computed at.
+    """
     from floodguard.scenario import Scenario
 
     if not path:
         raise SystemExit("--scenario is required for this command")
-    return Scenario.from_yaml(path)
+    scenario = Scenario.from_yaml(path)
+    if resolution_m:
+        scenario = scenario.model_copy(deep=True)
+        scenario.domain.resolution_m = resolution_m
+    return scenario
 
 
 # --- commands ---------------------------------------------------------------------
@@ -71,7 +85,7 @@ def cmd_data(args) -> int:
     """Phase 1: fetch and cache every input layer for a scenario."""
     from floodguard.data.acquire import acquire, derive_aoi, layer_table
 
-    scenario = _load_scenario(args.scenario)
+    scenario = _load_scenario(args.scenario, args.resolution)
     data_dir = Path(args.data_dir or DEFAULT_DATA_DIR)
 
     aoi = derive_aoi(scenario)
@@ -129,7 +143,7 @@ def cmd_preprocess(args) -> int:
     """Phase 2: condition the DEM, trace the corridor, derive the reservoir curve."""
     from floodguard.preprocess.pipeline import run_preprocess
 
-    scenario = _load_scenario(args.scenario)
+    scenario = _load_scenario(args.scenario, args.resolution)
     data_dir = Path(args.data_dir or DEFAULT_DATA_DIR)
     result = run_preprocess(scenario, data_dir)
     print(result.summary())
@@ -215,6 +229,37 @@ def cmd_breach(args) -> int:
     return 0
 
 
+def cmd_simulate(args) -> int:
+    """Phases 2-5: the full headless pipeline for one scenario."""
+    from floodguard.pipeline import simulate
+
+    scenario = _load_scenario(args.scenario, args.resolution)
+    data_dir = Path(args.data_dir or DEFAULT_DATA_DIR)
+
+    print(f"Resolution: {scenario.domain.resolution_m:.0f} m "
+          f"(cost scales as ~1/res^3; every output records this value)")
+
+    last = {"phase": None}
+
+    def progress(*, fraction, phase, message, **extra):
+        if phase != last["phase"]:
+            print(f"[{fraction * 100:5.1f}%] {phase}")
+            last["phase"] = phase
+        if extra.get("step") or phase == "done":
+            print(f"          {message}")
+
+    result = simulate(
+        scenario,
+        data_dir,
+        progress=progress,
+        engines=args.engines.split(",") if args.engines else None,
+        export=not args.no_export,
+    )
+    print()
+    print(result.summary())
+    return 0
+
+
 def cmd_validate(args) -> int:
     """Phase 4.5: analytical and benchmark verification of the solver."""
     from floodguard.validation.run import run_validation
@@ -246,6 +291,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_data = sub.add_parser("data", help="[Phase 1] fetch and cache all input layers")
     p_data.add_argument("--scenario", required=True)
     p_data.add_argument("--data-dir")
+    p_data.add_argument(
+        "--resolution", type=float,
+        help="compute grid resolution in metres, overriding the scenario",
+    )
     p_data.add_argument("--skip-population", action="store_true")
     p_data.add_argument("--skip-osm", action="store_true")
     p_data.add_argument("--no-mosaic", action="store_true")
@@ -256,6 +305,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_pre = sub.add_parser("preprocess", help="[Phase 2] DEM conditioning, corridor, reservoir")
     p_pre.add_argument("--scenario", required=True)
     p_pre.add_argument("--data-dir")
+    p_pre.add_argument(
+        "--resolution", type=float,
+        help="compute grid resolution in metres, overriding the scenario",
+    )
 
     p_breach = sub.add_parser("breach", help="[Phase 3] breach parameters + outflow hydrograph")
     p_breach.add_argument("--scenario")
@@ -264,6 +317,16 @@ def build_parser() -> argparse.ArgumentParser:
         "--validate", action="store_true",
         help="score the breach models against Teton 1976 and Banqiao 1975",
     )
+
+    p_sim = sub.add_parser("simulate", help="[Phase 2-5] full headless pipeline")
+    p_sim.add_argument("--scenario", required=True)
+    p_sim.add_argument("--data-dir")
+    p_sim.add_argument(
+        "--resolution", type=float,
+        help="compute grid resolution in metres, overriding the scenario",
+    )
+    p_sim.add_argument("--engines", help="comma-separated engine ids, e.g. swe_fv,delft3d")
+    p_sim.add_argument("--no-export", action="store_true")
 
     p_val = sub.add_parser("validate", help="[Phase 4.5] Ritter/Stoker/lake-at-rest/mass balance")
     p_val.add_argument("--out")
@@ -285,6 +348,7 @@ DISPATCH = {
     "preprocess": cmd_preprocess,
     "validate": cmd_validate,
     "breach": cmd_breach,
+    "simulate": cmd_simulate,
 }
 
 

@@ -276,6 +276,7 @@ def flux_sweep(
     s_eta_x, s_u_x, s_v_x, s_z_x,
     s_eta_y, s_u_y, s_v_y, s_z_y,
     dh, dhu, dhv,
+    fy0, fy1, fy2, fy3,
     active, dx, dy, dry_tol, second_order,
 ):
     """One full flux sweep: accumulate -div(F) + bed source into dh/dhu/dhv.
@@ -382,9 +383,22 @@ def flux_sweep(
                 dhu[r, c] -= G * 0.5 * (hp + hm) * (zp - zm) / dx
 
     # --- y-direction faces (between r and r+1) ---
-    # Roles swap: v is the normal component here, u the transverse one.
-    for c in prange(cols):
-        for r in range(rows - 1):
+    #
+    # Written as two row-major passes through a temporary face-flux array
+    # rather than one loop over columns. The obvious formulation,
+    #     for c in prange(cols): for r in range(rows - 1): ...
+    # parallelises over columns and therefore walks a C-contiguous array down
+    # a column, striding a full row (tens of kilobytes) on every access. On a
+    # 1 Mcell grid that single choice accounted for roughly 30 ms of a 41 ms
+    # sweep. Both passes below run along rows, in memory order, and neither
+    # has a cross-thread write conflict.
+    #
+    # Roles swap in this direction: v is the normal component, u the transverse.
+    for r in prange(rows - 1):
+        for c in range(cols):
+            fy0[r, c] = 0.0
+            fy1[r, c] = 0.0
+            fy2[r, c] = 0.0
             if not active[r, c] or not active[r + 1, c]:
                 continue
 
@@ -428,22 +442,31 @@ def flux_sweep(
                 hBs, hBs * vB, hBs * uB, hTs, hTs * vT, hTs * uT, dry_tol
             )
 
-            srcB = 0.5 * G * (hBi * hBi - hBs * hBs)
-            srcT = 0.5 * G * (hTi * hTi - hTs * hTs)
+            # Store the flux together with each side's interface correction, so
+            # the accumulation pass needs no state from this one.
+            fy0[r, c] = F0
+            fy1[r, c] = F1 + 0.5 * G * (hBi * hBi - hBs * hBs)
+            fy2[r, c] = F2
+            fy3[r, c] = F1 + 0.5 * G * (hTi * hTi - hTs * hTs)
 
-            inv_dy = 1.0 / dy
-            dh[r, c] -= F0 * inv_dy
-            dhv[r, c] -= (F1 + srcB) * inv_dy
-            dhu[r, c] -= F2 * inv_dy
-
-            dh[r + 1, c] += F0 * inv_dy
-            dhv[r + 1, c] += (F1 + srcT) * inv_dy
-            dhu[r + 1, c] += F2 * inv_dy
+    inv_dy = 1.0 / dy
+    for r in prange(rows):
+        for c in range(cols):
+            if not active[r, c]:
+                continue
+            if r < rows - 1:
+                dh[r, c] -= fy0[r, c] * inv_dy
+                dhv[r, c] -= fy1[r, c] * inv_dy
+                dhu[r, c] -= fy2[r, c] * inv_dy
+            if r > 0:
+                dh[r, c] += fy0[r - 1, c] * inv_dy
+                dhv[r, c] += fy3[r - 1, c] * inv_dy
+                dhu[r, c] += fy2[r - 1, c] * inv_dy
 
     # --- y-direction centred bed-slope source ---
     if second_order:
-        for c in prange(cols):
-            for r in range(rows):
+        for r in prange(rows):
+            for c in range(cols):
                 if not active[r, c]:
                     continue
                 zp = z[r, c] + 0.5 * s_z_y[r, c]
@@ -454,7 +477,7 @@ def flux_sweep(
                     hp = 0.0
                 if hm < 0.0:
                     hm = 0.0
-                dhv[r, c] -= G * 0.5 * (hp + hm) * (zp - zm) / dy
+                dhv[r, c] -= G * 0.5 * (hp + hm) * (zp - zm) * inv_dy
 
 
 @njit(cache=True, parallel=True)
@@ -598,6 +621,141 @@ def boundary_fluxes(
                 dh[r, c] += F0 / dy
                 dhv[r, c] += F1 / dy
                 dhu[r, c] += F2 / dy
+
+
+@njit(cache=True, parallel=True)
+def reconstruct(
+    eta, u, v, h, z,
+    s_eta_x, s_eta_y, s_u_x, s_u_y, s_v_x, s_v_y, s_z_x, s_z_y,
+    s_z_x_base, s_z_y_base,
+    active, dry_tol,
+):
+    """All slope limiting for one stage, in a single pass over memory.
+
+    Replaces three `compute_slopes` calls, four `zero_slopes_at_wet_dry` calls
+    and two array copies — ten separate traversals of multi-megabyte arrays —
+    with one. On a grid large enough to miss cache, the traversals themselves
+    cost more than the arithmetic in them.
+
+    The wet/dry test is done once per cell and applied to all four fields,
+    which is also what keeps the bed slope limited on exactly the same cells as
+    the water-surface slope. Limiting them inconsistently manufactures water
+    out of the terrain gradient (see swe_fv._tendencies).
+    """
+    rows, cols = h.shape
+    for r in prange(rows):
+        for c in range(cols):
+            if not active[r, c]:
+                s_eta_x[r, c] = 0.0
+                s_eta_y[r, c] = 0.0
+                s_u_x[r, c] = 0.0
+                s_u_y[r, c] = 0.0
+                s_v_x[r, c] = 0.0
+                s_v_y[r, c] = 0.0
+                s_z_x[r, c] = 0.0
+                s_z_y[r, c] = 0.0
+                continue
+
+            # Two distinct conditions, kept distinct on purpose.
+            #
+            # `near_dry` is a 3x3 test: a cell adjacent to dry ground drops to
+            # first order in BOTH directions, because second-order
+            # reconstruction there pushes a film ahead of the physical wave.
+            #
+            # `edge_x` / `edge_y` are per-direction: a central slope simply
+            # cannot be formed without both neighbours. Collapsing these two
+            # into one condition — treating an out-of-bounds neighbour as
+            # "dry" — makes a cell at the domain edge first order in the
+            # direction the flow is actually moving. The resulting mismatch
+            # across the edge face leaks momentum into the interior and cost
+            # 1.0 percentage point of Ritter L2 error and a third of the
+            # observed convergence order when it was briefly present.
+            near_dry = False
+            for dr in range(-1, 2):
+                rr = r + dr
+                if rr < 0 or rr >= rows:
+                    continue
+                for dc in range(-1, 2):
+                    cc = c + dc
+                    if cc < 0 or cc >= cols:
+                        continue
+                    if not active[rr, cc] or h[rr, cc] <= dry_tol:
+                        near_dry = True
+
+            if near_dry:
+                s_eta_x[r, c] = 0.0
+                s_eta_y[r, c] = 0.0
+                s_u_x[r, c] = 0.0
+                s_u_y[r, c] = 0.0
+                s_v_x[r, c] = 0.0
+                s_v_y[r, c] = 0.0
+                s_z_x[r, c] = 0.0
+                s_z_y[r, c] = 0.0
+                continue
+
+            edge_x = c == 0 or c == cols - 1 or not active[r, c - 1] or not active[r, c + 1]
+            edge_y = r == 0 or r == rows - 1 or not active[r - 1, c] or not active[r + 1, c]
+
+            if edge_x:
+                s_eta_x[r, c] = 0.0
+                s_u_x[r, c] = 0.0
+                s_v_x[r, c] = 0.0
+                s_z_x[r, c] = 0.0
+            else:
+                s_eta_x[r, c] = _minmod(
+                    eta[r, c] - eta[r, c - 1], eta[r, c + 1] - eta[r, c]
+                )
+                s_u_x[r, c] = _minmod(u[r, c] - u[r, c - 1], u[r, c + 1] - u[r, c])
+                s_v_x[r, c] = _minmod(v[r, c] - v[r, c - 1], v[r, c + 1] - v[r, c])
+                s_z_x[r, c] = s_z_x_base[r, c]
+
+            if edge_y:
+                s_eta_y[r, c] = 0.0
+                s_u_y[r, c] = 0.0
+                s_v_y[r, c] = 0.0
+                s_z_y[r, c] = 0.0
+            else:
+                s_eta_y[r, c] = _minmod(
+                    eta[r, c] - eta[r - 1, c], eta[r + 1, c] - eta[r, c]
+                )
+                s_u_y[r, c] = _minmod(u[r, c] - u[r - 1, c], u[r + 1, c] - u[r, c])
+                s_v_y[r, c] = _minmod(v[r, c] - v[r - 1, c], v[r + 1, c] - v[r, c])
+                s_z_y[r, c] = s_z_y_base[r, c]
+
+
+@njit(cache=True, parallel=True)
+def save_state(h, hu, hv, h0, hu0, hv0, active):
+    """Copy the state into persistent buffers for the RK2 average."""
+    rows, cols = h.shape
+    for r in prange(rows):
+        for c in range(cols):
+            h0[r, c] = h[r, c]
+            hu0[r, c] = hu[r, c]
+            hv0[r, c] = hv[r, c]
+
+
+@njit(cache=True, parallel=True)
+def rk2_average(h, hu, hv, h0, hu0, hv0, active, dry_tol):
+    """u_new = (u^n + u^(2)) / 2, in place, with the dry-cell cleanup fused in.
+
+    Written as a kernel rather than as numpy expressions because
+    `h *= 0.5; h += 0.5 * h0` allocates a fresh full-size temporary for the
+    right-hand side on every one of six statements, every step.
+    """
+    rows, cols = h.shape
+    for r in prange(rows):
+        for c in range(cols):
+            if not active[r, c]:
+                continue
+            nh = 0.5 * (h[r, c] + h0[r, c])
+            if nh < dry_tol:
+                h[r, c] = 0.0
+                hu[r, c] = 0.0
+                hv[r, c] = 0.0
+            else:
+                h[r, c] = nh
+                hu[r, c] = 0.5 * (hu[r, c] + hu0[r, c])
+                hv[r, c] = 0.5 * (hv[r, c] + hv0[r, c])
 
 
 @njit(cache=True)
