@@ -1,0 +1,121 @@
+# FloodGuard India — demo scenario 2 (proves generality)
+#
+# Hirakud Dam, Odisha, on the Mahanadi. One of the world's longest earthen dams
+# (4.8 km main dam, ~26 km including dykes).
+#
+# Deliberately the opposite of Tehri: low head (61 m vs 260 m) but far larger
+# storage (8136 vs 3540 MCM) over flat deltaic terrain. The flood spreads wide
+# and slow instead of deep and fast. If the same code, with only a different
+# YAML, produces a sensible answer for both, the framework is general.
+
+id: hirakud_mahanadi
+name: "Hirakud Dam break — Mahanadi"
+description: >
+  Complete breach of Hirakud Dam at full reservoir level, routed down the
+  Mahanadi towards Sambalpur and the deltaic plain. Flat terrain, very wide
+  inundation, long warning times.
+
+scenario_type: complete_dam_break
+
+dam:
+  id: hirakud
+  name: "HIRAKUD"
+  river: Mahanadi
+  state: Odisha
+  lon: 83.87306
+  lat: 21.53639
+  dam_type: earthfill           # NRLD composite; the embankment section governs
+  structural_height_m: 60.96
+  crest_length_m: 4800.0
+  crest_elevation_m: 195.68
+  frl_m: 192.02                 # 630 ft above MSL
+  mddl_m: 179.83                # 590 ft above MSL
+  gross_storage_mcm: 8136.0
+  live_storage_mcm: 5820.0
+  commissioned_year: 1956
+  sources:
+    structural_height_m: "CWC NRLD-2019, Odisha p.232 (PIC OR10HH0003) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+    crest_length_m: "CWC NRLD-2019, Odisha p.232 (PIC OR10HH0003)"
+    gross_storage_mcm: "CWC NRLD-2019, Odisha p.232 (PIC OR10HH0003)"
+    live_storage_mcm: "CWC NRLD-2019, Odisha p.232 (PIC OR10HH0003)"
+    lon: "CWC NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS), ~30 m precision"
+    lat: "CWC NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS), ~30 m precision"
+    commissioned_year: "CWC NRLD-2019, Odisha p.232"
+    dam_type: "NRLD-2018 state sheets dam-type abbreviation. The 2019 edition lists 'arch', which is wrong for Hirakud; the 2018 composite classification is used and the discrepancy is recorded."
+    frl_m: "Hirakud Dam Project / Odisha Dept. of Water Resources operating levels, 630 ft MSL converted. NOT in the NRLD tables — flagged for verification against the DEM-derived curve."
+    mddl_m: "Hirakud Dam Project operating levels, 590 ft MSL converted. NOT in the NRLD tables — flagged."
+    crest_elevation_m: "Derived as FRL + 3.66 m (12 ft) freeboard. FLAGGED: verify against the DEM at the dam axis."
+
+breach:
+  shape: trapezoidal
+  growth: linear
+  side_slope: 1.0
+  parameter_model: froehlich_2008
+
+reservoir:
+  initial_level_m: 192.02
+  inflow_m3s: 0.0
+  spillway_active: false
+
+domain:
+  reach_length_km: 150.0        # flatter terrain, the wave travels further
+  corridor_buffer_km: 12.0      # and spreads much wider than at Tehri
+  resolution_m: 30.0
+  crs: "EPSG:32645"             # UTM 45N
+
+solver:
+  duration_hours: 24.0          # slow wave: 6 h is not enough to reach the delta
+  cfl: 0.45
+  dry_tolerance_m: 0.001
+  wet_threshold_m: 0.3
+  output_interval_s: 900.0
+  default_manning_n: 0.035
+  manning_n_overrides:
+    channel: 0.030
+    forest: 0.100
+    urban: 0.080
+    agriculture: 0.050
+    bare: 0.025
+  second_order: true
+
+dem:
+  sources: [copernicus_s3, planetary_computer, opentopography]
+  resolution_m: 30.0
+
+towns:
+  - name: Sambalpur
+    lon: 83.9812
+    lat: 21.4669
+    approx_km_downstream: 15
+    population: 335761
+    population_source: "Census of India 2011, urban agglomeration"
+  - name: Sonepur
+    lon: 84.2800
+    lat: 20.8330
+    approx_km_downstream: 90
+    population: 19244
+    population_source: "Census of India 2011"
+  - name: Boudh
+    lon: 84.3300
+    lat: 20.8330
+    approx_km_downstream: 120
+    population: 15821
+    population_source: "Census of India 2011"
+
+engines: [swe_fv]
+
+notes:
+  - >
+    Hirakud's storage is more than twice Tehri's behind a dam a quarter the
+    height. Peak discharge is lower but total volume and inundated area are far
+    greater, and the wave takes many hours rather than minutes to arrive. This
+    is why duration_hours is 24 here and 6 at Tehri.
+  - >
+    The 4.8 km main dam plus ~21 km of flanking dykes means a real failure
+    would be a partial breach of one section, not a uniform collapse of the
+    whole structure. complete_dam_break here is an upper-bound envelope.
+    Use scenario_type partial_breach for a more realistic case.
+  - >
+    Over flat deltaic terrain a 30 m DSM struggles to resolve embankments and
+    canal bunds that control where water actually goes. Inundation extent here
+    is more uncertain than at Tehri, in the direction of over-prediction.

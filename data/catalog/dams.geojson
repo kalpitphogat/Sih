@@ -1,0 +1,1531 @@
+{
+  "type": "FeatureCollection",
+  "name": "FloodGuard India dam catalog",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "metadata": {
+    "generated_utc": "2026-09-20T00:14:40+00:00",
+    "generator": "scripts/build_dam_catalog.py",
+    "record_count": 30,
+    "primary_source": "CWC National Register of Large Dams (NRLD) 2019",
+    "primary_source_url": "https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+    "transcription_credit": "Attribute transcription with per-dam NRLD page citations originates in the team's hydrobreach repository; carried across verbatim, not re-keyed.",
+    "licence": "NRLD is a Government of India publication. Reuse under the National Data Sharing and Accessibility Policy (NDSAP); see docs/DATA_SOURCES.md.",
+    "known_gaps": {
+      "Idukki": "Kerala, Periyar river, double-curvature concrete arch. Not present in the NRLD-2019 transcription we inherited. To add it, transcribe the Kerala state sheet of nrld-2019.pdf with the same per-field citations."
+    },
+    "caveats": [
+      "frl_m, mddl_m, crest_elevation_m and spillway_capacity_m3s are null for every record: they are not in the NRLD tables transcribed here. They are never guessed. Scenario files may supply them explicitly with their own citation.",
+      "Coordinates are single points of unstated convention at ~30 m precision. The dam point is snapped to the DEM-derived stream in Phase 2 before use."
+    ]
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.88694,
+          16.33111
+        ]
+      },
+      "properties": {
+        "id": "almatti_dam",
+        "nrld_id": "NRLD:KA06HH0200",
+        "name": "Almatti Dam",
+        "river": "Krishna",
+        "state": "Karnataka",
+        "lon": 75.88694,
+        "lat": 16.33111,
+        "dam_type": "earthfill",
+        "structural_height_m": 49.29,
+        "crest_length_m": 1564.83,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3485.0,
+        "live_storage_mcm": 2990.0,
+        "reservoir_area_km2": 487.87,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 2000,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Karnataka, p.103 (PIC KA06HH0200, Dam Type column); Dams of National Importance p.22 Sl. No. 16 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Karnataka, p.103 (PIC KA06HH0200, Dam Type column); Dams of National Importance p.22 Sl. No. 16 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Karnataka, p.103 (PIC KA06HH0200, Dam Type column); Dams of National Importance p.22 Sl. No. 16 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Karnataka, p.103 (PIC KA06HH0200, Dam Type column); Dams of National Importance p.22 Sl. No. 16 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Karnataka, p.103 (PIC KA06HH0200, Dam Type column); Dams of National Importance p.22 Sl. No. 16 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Karnataka, p.103 (PIC KA06HH0200, Dam Type column); Dams of National Importance p.22 Sl. No. 16 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Karnataka, p.103 (PIC KA06HH0200, Dam Type column); Dams of National Importance p.22 Sl. No. 16 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Karnataka, p.103 (PIC KA06HH0200, Dam Type column); Dams of National Importance p.22 Sl. No. 16 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.29,
+          18.1425
+        ]
+      },
+      "properties": {
+        "id": "balimela",
+        "nrld_id": "NRLD:OR10HH0041",
+        "name": "BALIMELA",
+        "river": "Sileru",
+        "state": "Odisha",
+        "lon": 82.29,
+        "lat": 18.1425,
+        "dam_type": "earthfill",
+        "structural_height_m": 70.0,
+        "crest_length_m": 1821.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3610.0,
+        "live_storage_mcm": 2680.0,
+        "reservoir_area_km2": 194.4,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1977,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Odisha, p.233 (PIC OR10HH0041, Dam Type column); Dams of National Importance p.23 Sl. No. 47 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Odisha, p.233 (PIC OR10HH0041, Dam Type column); Dams of National Importance p.23 Sl. No. 47 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.233 (PIC OR10HH0041, Dam Type column); Dams of National Importance p.23 Sl. No. 47 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.233 (PIC OR10HH0041, Dam Type column); Dams of National Importance p.23 Sl. No. 47 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Odisha, p.233 (PIC OR10HH0041, Dam Type column); Dams of National Importance p.23 Sl. No. 47 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Odisha, p.233 (PIC OR10HH0041, Dam Type column); Dams of National Importance p.23 Sl. No. 47 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Odisha, p.233 (PIC OR10HH0041, Dam Type column); Dams of National Importance p.23 Sl. No. 47 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Odisha, p.233 (PIC OR10HH0041, Dam Type column); Dams of National Importance p.23 Sl. No. 47 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          81.28778,
+          24.18556
+        ]
+      },
+      "properties": {
+        "id": "ban_sagar",
+        "nrld_id": "NRLD:MP08HH0899",
+        "name": "BAN SAGAR",
+        "river": "Sone",
+        "state": "Madhya Pradesh",
+        "lon": 81.28778,
+        "lat": 24.18556,
+        "dam_type": "earthfill",
+        "structural_height_m": 67.5,
+        "crest_length_m": 405.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 6370.0,
+        "live_storage_mcm": 5430.0,
+        "reservoir_area_km2": null,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 2006,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.133 (PIC MP08HH0899, Dam Type column); Dams of National Importance p.22 Sl. No. 31 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.133 (PIC MP08HH0899, Dam Type column); Dams of National Importance p.22 Sl. No. 31 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.133 (PIC MP08HH0899, Dam Type column); Dams of National Importance p.22 Sl. No. 31 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.133 (PIC MP08HH0899, Dam Type column); Dams of National Importance p.22 Sl. No. 31 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.133 (PIC MP08HH0899, Dam Type column); Dams of National Importance p.22 Sl. No. 31 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.133 (PIC MP08HH0899, Dam Type column); Dams of National Importance p.22 Sl. No. 31 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.133 (PIC MP08HH0899, Dam Type column); Dams of National Importance p.22 Sl. No. 31 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.133 (PIC MP08HH0899, Dam Type column); Dams of National Importance p.22 Sl. No. 31 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.44472,
+          31.41139
+        ]
+      },
+      "properties": {
+        "id": "bhakra_bbmb",
+        "nrld_id": "NRLD:HP27VH0001",
+        "name": "BHAKRA (BBMB)",
+        "river": "Sutlej",
+        "state": "Himachal Pradesh",
+        "lon": 76.44472,
+        "lat": 31.41139,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 225.55,
+        "crest_length_m": 518.16,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 7551.0,
+        "live_storage_mcm": 6010.0,
+        "reservoir_area_km2": 168.35,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1963,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Himachal Pradesh, p.88 (PIC HP27VH0001, Dam Type column); Dams of National Importance p.21 Sl. No. 5 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Himachal Pradesh, p.88 (PIC HP27VH0001, Dam Type column); Dams of National Importance p.21 Sl. No. 5 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Himachal Pradesh, p.88 (PIC HP27VH0001, Dam Type column); Dams of National Importance p.21 Sl. No. 5 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Himachal Pradesh, p.88 (PIC HP27VH0001, Dam Type column); Dams of National Importance p.21 Sl. No. 5 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Himachal Pradesh, p.88 (PIC HP27VH0001, Dam Type column); Dams of National Importance p.21 Sl. No. 5 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Himachal Pradesh, p.88 (PIC HP27VH0001, Dam Type column); Dams of National Importance p.21 Sl. No. 5 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Himachal Pradesh, p.88 (PIC HP27VH0001, Dam Type column); Dams of National Importance p.21 Sl. No. 5 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Himachal Pradesh, p.88 (PIC HP27VH0001, Dam Type column); Dams of National Importance p.21 Sl. No. 5 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.87306,
+          21.53639
+        ]
+      },
+      "properties": {
+        "id": "hirakud",
+        "nrld_id": "NRLD:OR10HH0003",
+        "name": "HIRAKUD",
+        "river": "Mahanadi",
+        "state": "Odisha",
+        "lon": 83.87306,
+        "lat": 21.53639,
+        "dam_type": "earthfill",
+        "structural_height_m": 60.96,
+        "crest_length_m": 4800.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 8136.0,
+        "live_storage_mcm": 5820.0,
+        "reservoir_area_km2": 743.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1956,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "type_composite_embankment_section_governs",
+          "type_2019_arch_rejected_confirmed_composite_by_2018",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Odisha, p.232 (PIC OR10HH0003, Dam Type column); Dams of National Importance p.23 Sl. No. 46 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Odisha, p.232 (PIC OR10HH0003, Dam Type column); Dams of National Importance p.23 Sl. No. 46 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.232 (PIC OR10HH0003, Dam Type column); Dams of National Importance p.23 Sl. No. 46 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.232 (PIC OR10HH0003, Dam Type column); Dams of National Importance p.23 Sl. No. 46 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Odisha, p.232 (PIC OR10HH0003, Dam Type column); Dams of National Importance p.23 Sl. No. 46 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Odisha, p.232 (PIC OR10HH0003, Dam Type column); Dams of National Importance p.23 Sl. No. 46 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Odisha, p.232 (PIC OR10HH0003, Dam Type column); Dams of National Importance p.23 Sl. No. 46 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Odisha, p.232 (PIC OR10HH0003, Dam Type column); Dams of National Importance p.23 Sl. No. 46 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.4725,
+          22.28444
+        ]
+      },
+      "properties": {
+        "id": "indira_sagar",
+        "nrld_id": "NRLD:MP30HH0870",
+        "name": "INDIRA SAGAR",
+        "river": "Narmada",
+        "state": "Madhya Pradesh",
+        "lon": 76.4725,
+        "lat": 22.28444,
+        "dam_type": "earthfill",
+        "structural_height_m": 91.4,
+        "crest_length_m": 654.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 12220.0,
+        "live_storage_mcm": 9750.0,
+        "reservoir_area_km2": 913.48,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 2006,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.132 (PIC MP30HH0870, Dam Type column); Dams of National Importance p.22 Sl. No. 30 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.132 (PIC MP30HH0870, Dam Type column); Dams of National Importance p.22 Sl. No. 30 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.132 (PIC MP30HH0870, Dam Type column); Dams of National Importance p.22 Sl. No. 30 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.132 (PIC MP30HH0870, Dam Type column); Dams of National Importance p.22 Sl. No. 30 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.132 (PIC MP30HH0870, Dam Type column); Dams of National Importance p.22 Sl. No. 30 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.132 (PIC MP30HH0870, Dam Type column); Dams of National Importance p.22 Sl. No. 30 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.132 (PIC MP30HH0870, Dam Type column); Dams of National Importance p.22 Sl. No. 30 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.132 (PIC MP30HH0870, Dam Type column); Dams of National Importance p.22 Sl. No. 30 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.36889,
+          19.48333
+        ]
+      },
+      "properties": {
+        "id": "jayakwadi",
+        "nrld_id": "NRLD:MH09HH0597",
+        "name": "JAYAKWADI",
+        "river": "Godavari",
+        "state": "Maharashtra",
+        "lon": 75.36889,
+        "lat": 19.48333,
+        "dam_type": "earthfill",
+        "structural_height_m": 41.3,
+        "crest_length_m": 10415.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2909.0,
+        "live_storage_mcm": 2170.0,
+        "reservoir_area_km2": null,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1976,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "reservoir_area_omitted_editions_irreconcilable",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Maharashtra, p.156 (PIC MH09HH0597, Dam Type column); Dams of National Importance p.23 Sl. No. 41 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Maharashtra, p.156 (PIC MH09HH0597, Dam Type column); Dams of National Importance p.23 Sl. No. 41 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Maharashtra, p.156 (PIC MH09HH0597, Dam Type column); Dams of National Importance p.23 Sl. No. 41 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Maharashtra, p.156 (PIC MH09HH0597, Dam Type column); Dams of National Importance p.23 Sl. No. 41 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Maharashtra, p.156 (PIC MH09HH0597, Dam Type column); Dams of National Importance p.23 Sl. No. 41 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Maharashtra, p.156 (PIC MH09HH0597, Dam Type column); Dams of National Importance p.23 Sl. No. 41 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Maharashtra, p.156 (PIC MH09HH0597, Dam Type column); Dams of National Importance p.23 Sl. No. 41 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Maharashtra, p.156 (PIC MH09HH0597, Dam Type column); Dams of National Importance p.23 Sl. No. 41 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.78083,
+          19.19611
+        ]
+      },
+      "properties": {
+        "id": "kapur_upper_indravati_project",
+        "nrld_id": "NRLD:OR10HH0147",
+        "name": "KAPUR (Upper Indravati Project)",
+        "river": "Kapur",
+        "state": "Odisha",
+        "lon": 82.78083,
+        "lat": 19.19611,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 64.0,
+        "crest_length_m": 537.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2300.0,
+        "live_storage_mcm": 1500.0,
+        "reservoir_area_km2": 110.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1994,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "shared_reservoir_upper_indravati_do_not_sum_storage",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0147, Dam Type column); Dams of National Importance p.24 Sl. No. 51 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0147, Dam Type column); Dams of National Importance p.24 Sl. No. 51 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0147, Dam Type column); Dams of National Importance p.24 Sl. No. 51 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0147, Dam Type column); Dams of National Importance p.24 Sl. No. 51 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0147, Dam Type column); Dams of National Importance p.24 Sl. No. 51 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0147, Dam Type column); Dams of National Importance p.24 Sl. No. 51 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0147, Dam Type column); Dams of National Importance p.24 Sl. No. 51 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0147, Dam Type column); Dams of National Importance p.24 Sl. No. 51 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.75222,
+          17.40194
+        ]
+      },
+      "properties": {
+        "id": "koyna",
+        "nrld_id": "NRLD:MH09VH0100",
+        "name": "KOYNA",
+        "river": "Koyna",
+        "state": "Maharashtra",
+        "lon": 73.75222,
+        "lat": 17.40194,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 103.02,
+        "crest_length_m": 807.72,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2981.0,
+        "live_storage_mcm": 2840.0,
+        "reservoir_area_km2": 119.69,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1964,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Maharashtra, p.137 (PIC MH09VH0100, Dam Type column); Dams of National Importance p.23 Sl. No. 42 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Maharashtra, p.137 (PIC MH09VH0100, Dam Type column); Dams of National Importance p.23 Sl. No. 42 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Maharashtra, p.137 (PIC MH09VH0100, Dam Type column); Dams of National Importance p.23 Sl. No. 42 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Maharashtra, p.137 (PIC MH09VH0100, Dam Type column); Dams of National Importance p.23 Sl. No. 42 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Maharashtra, p.137 (PIC MH09VH0100, Dam Type column); Dams of National Importance p.23 Sl. No. 42 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Maharashtra, p.137 (PIC MH09VH0100, Dam Type column); Dams of National Importance p.23 Sl. No. 42 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Maharashtra, p.137 (PIC MH09VH0100, Dam Type column); Dams of National Importance p.23 Sl. No. 42 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Maharashtra, p.137 (PIC MH09VH0100, Dam Type column); Dams of National Importance p.23 Sl. No. 42 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.84639,
+          14.17556
+        ]
+      },
+      "properties": {
+        "id": "linganamakki_dam",
+        "nrld_id": "NRLD:KA06HH0055",
+        "name": "Linganamakki Dam",
+        "river": "Sharavathi",
+        "state": "Karnataka",
+        "lon": 74.84639,
+        "lat": 14.17556,
+        "dam_type": "earthfill",
+        "structural_height_m": 61.26,
+        "crest_length_m": 2749.29,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 4435.0,
+        "live_storage_mcm": 4290.0,
+        "reservoir_area_km2": 317.28,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1964,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Karnataka, p.95 (PIC KA06HH0055, Dam Type column); Dams of National Importance p.22 Sl. No. 19 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Karnataka, p.95 (PIC KA06HH0055, Dam Type column); Dams of National Importance p.22 Sl. No. 19 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Karnataka, p.95 (PIC KA06HH0055, Dam Type column); Dams of National Importance p.22 Sl. No. 19 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Karnataka, p.95 (PIC KA06HH0055, Dam Type column); Dams of National Importance p.22 Sl. No. 19 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Karnataka, p.95 (PIC KA06HH0055, Dam Type column); Dams of National Importance p.22 Sl. No. 19 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Karnataka, p.95 (PIC KA06HH0055, Dam Type column); Dams of National Importance p.22 Sl. No. 19 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Karnataka, p.95 (PIC KA06HH0055, Dam Type column); Dams of National Importance p.22 Sl. No. 19 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Karnataka, p.95 (PIC KA06HH0055, Dam Type column); Dams of National Importance p.22 Sl. No. 19 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.54722,
+          23.62806
+        ]
+      },
+      "properties": {
+        "id": "mahi_bajaj_sagar",
+        "nrld_id": "NRLD:RA11HH0119",
+        "name": "MAHI BAJAJ SAGAR",
+        "river": "Mahi",
+        "state": "Rajasthan",
+        "lon": 74.54722,
+        "lat": 23.62806,
+        "dam_type": "earthfill",
+        "structural_height_m": 74.5,
+        "crest_length_m": 3109.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2180.0,
+        "live_storage_mcm": 1830.0,
+        "reservoir_area_km2": 142.9,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1985,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Rajasthan, p.246 (PIC RA11HH0119, Dam Type column); Dams of National Importance p.24 Sl. No. 57 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Rajasthan, p.246 (PIC RA11HH0119, Dam Type column); Dams of National Importance p.24 Sl. No. 57 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Rajasthan, p.246 (PIC RA11HH0119, Dam Type column); Dams of National Importance p.24 Sl. No. 57 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Rajasthan, p.246 (PIC RA11HH0119, Dam Type column); Dams of National Importance p.24 Sl. No. 57 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Rajasthan, p.246 (PIC RA11HH0119, Dam Type column); Dams of National Importance p.24 Sl. No. 57 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Rajasthan, p.246 (PIC RA11HH0119, Dam Type column); Dams of National Importance p.24 Sl. No. 57 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Rajasthan, p.246 (PIC RA11HH0119, Dam Type column); Dams of National Importance p.24 Sl. No. 57 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Rajasthan, p.246 (PIC RA11HH0119, Dam Type column); Dams of National Importance p.24 Sl. No. 57 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.81028,
+          11.80194
+        ]
+      },
+      "properties": {
+        "id": "mettur",
+        "nrld_id": "NRLD:TN12HH0005",
+        "name": "Mettur",
+        "river": "Cauvery",
+        "state": "Tamil Nadu",
+        "lon": 77.81028,
+        "lat": 11.80194,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 70.41,
+        "crest_length_m": 1615.4,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2709.0,
+        "live_storage_mcm": 2650.0,
+        "reservoir_area_km2": 153.46,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1934,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Tamil Nadu, p.250 (PIC TN12HH0005, Dam Type column); Dams of National Importance p.24 Sl. No. 58 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Tamil Nadu, p.250 (PIC TN12HH0005, Dam Type column); Dams of National Importance p.24 Sl. No. 58 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Tamil Nadu, p.250 (PIC TN12HH0005, Dam Type column); Dams of National Importance p.24 Sl. No. 58 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Tamil Nadu, p.250 (PIC TN12HH0005, Dam Type column); Dams of National Importance p.24 Sl. No. 58 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Tamil Nadu, p.250 (PIC TN12HH0005, Dam Type column); Dams of National Importance p.24 Sl. No. 58 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Tamil Nadu, p.250 (PIC TN12HH0005, Dam Type column); Dams of National Importance p.24 Sl. No. 58 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Tamil Nadu, p.250 (PIC TN12HH0005, Dam Type column); Dams of National Importance p.24 Sl. No. 58 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Tamil Nadu, p.250 (PIC TN12HH0005, Dam Type column); Dams of National Importance p.24 Sl. No. 58 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.59806,
+          22.605
+        ]
+      },
+      "properties": {
+        "id": "minimata_bango",
+        "nrld_id": "NRLD:CG03HH0173",
+        "name": "MINIMATA BANGO",
+        "river": "Hasdeo",
+        "state": "Chhattisgarh",
+        "lon": 82.59806,
+        "lat": 22.605,
+        "dam_type": "earthfill",
+        "structural_height_m": 87.0,
+        "crest_length_m": 554.5,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3416.0,
+        "live_storage_mcm": 2890.0,
+        "reservoir_area_km2": null,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1990,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "reservoir_area_omitted_implausible_mean_depth",
+          "river_name_approximate",
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Chhattisgarh, p.57 (PIC CG03HH0173, Dam Type column); Dams of National Importance p.25 Sl. No. 70 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Chhattisgarh, p.57 (PIC CG03HH0173, Dam Type column); Dams of National Importance p.25 Sl. No. 70 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Chhattisgarh, p.57 (PIC CG03HH0173, Dam Type column); Dams of National Importance p.25 Sl. No. 70 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Chhattisgarh, p.57 (PIC CG03HH0173, Dam Type column); Dams of National Importance p.25 Sl. No. 70 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Chhattisgarh, p.57 (PIC CG03HH0173, Dam Type column); Dams of National Importance p.25 Sl. No. 70 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Chhattisgarh, p.57 (PIC CG03HH0173, Dam Type column); Dams of National Importance p.25 Sl. No. 70 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Chhattisgarh, p.57 (PIC CG03HH0173, Dam Type column); Dams of National Importance p.25 Sl. No. 70 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Chhattisgarh, p.57 (PIC CG03HH0173, Dam Type column); Dams of National Importance p.25 Sl. No. 70 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.76278,
+          19.10528
+        ]
+      },
+      "properties": {
+        "id": "muran_upper_indravati_project",
+        "nrld_id": "NRLD:OR10HH0148",
+        "name": "MURAN (Upper Indravati Project)",
+        "river": "Muran",
+        "state": "Odisha",
+        "lon": 82.76278,
+        "lat": 19.10528,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 65.0,
+        "crest_length_m": 494.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2300.0,
+        "live_storage_mcm": 1500.0,
+        "reservoir_area_km2": 110.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1981,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "shared_reservoir_upper_indravati_do_not_sum_storage",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0148, Dam Type column); Dams of National Importance p.24 Sl. No. 52 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0148, Dam Type column); Dams of National Importance p.24 Sl. No. 52 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0148, Dam Type column); Dams of National Importance p.24 Sl. No. 52 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0148, Dam Type column); Dams of National Importance p.24 Sl. No. 52 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0148, Dam Type column); Dams of National Importance p.24 Sl. No. 52 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0148, Dam Type column); Dams of National Importance p.24 Sl. No. 52 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0148, Dam Type column); Dams of National Importance p.24 Sl. No. 52 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0148, Dam Type column); Dams of National Importance p.24 Sl. No. 52 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.31111,
+          16.57611
+        ]
+      },
+      "properties": {
+        "id": "nagarjuna_sagar_project",
+        "nrld_id": "NRLD:TL47VH0057",
+        "name": "Nagarjuna Sagar Project",
+        "river": "Krishna",
+        "state": "Telangana",
+        "lon": 79.31111,
+        "lat": 16.57611,
+        "dam_type": "earthfill",
+        "structural_height_m": 124.66,
+        "crest_length_m": 4865.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 11550.0,
+        "live_storage_mcm": 6920.0,
+        "reservoir_area_km2": 284.9,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1955,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47VH0057, Dam Type column); Dams of National Importance p.25 Sl. No. 69 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47VH0057, Dam Type column); Dams of National Importance p.25 Sl. No. 69 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47VH0057, Dam Type column); Dams of National Importance p.25 Sl. No. 69 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47VH0057, Dam Type column); Dams of National Importance p.25 Sl. No. 69 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47VH0057, Dam Type column); Dams of National Importance p.25 Sl. No. 69 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47VH0057, Dam Type column); Dams of National Importance p.25 Sl. No. 69 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47VH0057, Dam Type column); Dams of National Importance p.25 Sl. No. 69 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47VH0057, Dam Type column); Dams of National Importance p.25 Sl. No. 69 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.81056,
+          19.23028
+        ]
+      },
+      "properties": {
+        "id": "podagada_upper_indravati_project",
+        "nrld_id": "NRLD:OR10HH0149",
+        "name": "PODAGADA (Upper Indravati Project)",
+        "river": "Podagada",
+        "state": "Odisha",
+        "lon": 82.81056,
+        "lat": 19.23028,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 77.5,
+        "crest_length_m": 462.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2300.0,
+        "live_storage_mcm": 1500.0,
+        "reservoir_area_km2": 110.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1996,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "shared_reservoir_upper_indravati_do_not_sum_storage",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0149, Dam Type column); Dams of National Importance p.24 Sl. No. 53 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0149, Dam Type column); Dams of National Importance p.24 Sl. No. 53 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0149, Dam Type column); Dams of National Importance p.24 Sl. No. 53 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0149, Dam Type column); Dams of National Importance p.24 Sl. No. 53 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0149, Dam Type column); Dams of National Importance p.24 Sl. No. 53 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0149, Dam Type column); Dams of National Importance p.24 Sl. No. 53 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0149, Dam Type column); Dams of National Importance p.24 Sl. No. 53 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Odisha, p.238 (PIC OR10HH0149, Dam Type column); Dams of National Importance p.24 Sl. No. 53 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.925,
+          22.94167
+        ]
+      },
+      "properties": {
+        "id": "rani_awanti_bai_lodhi_sagar_nvda",
+        "nrld_id": "NRLD:MP39HH0676",
+        "name": "RANI AWANTI BAI lodhi Sagar (NVDA)",
+        "river": "Narmada",
+        "state": "Madhya Pradesh",
+        "lon": 79.925,
+        "lat": 22.94167,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 69.8,
+        "crest_length_m": 5357.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3920.0,
+        "live_storage_mcm": 3180.0,
+        "reservoir_area_km2": 267.97,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1988,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.127 (PIC MP39HH0676, Dam Type column); Dams of National Importance p.23 Sl. No. 32 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.127 (PIC MP39HH0676, Dam Type column); Dams of National Importance p.23 Sl. No. 32 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.127 (PIC MP39HH0676, Dam Type column); Dams of National Importance p.23 Sl. No. 32 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.127 (PIC MP39HH0676, Dam Type column); Dams of National Importance p.23 Sl. No. 32 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.127 (PIC MP39HH0676, Dam Type column); Dams of National Importance p.23 Sl. No. 32 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.127 (PIC MP39HH0676, Dam Type column); Dams of National Importance p.23 Sl. No. 32 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.127 (PIC MP39HH0676, Dam Type column); Dams of National Importance p.23 Sl. No. 32 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.127 (PIC MP39HH0676, Dam Type column); Dams of National Importance p.23 Sl. No. 32 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.72861,
+          32.44389
+        ]
+      },
+      "properties": {
+        "id": "ranjit_sagar",
+        "nrld_id": "NRLD:PB26VH0011",
+        "name": "RANJIT SAGAR",
+        "river": "Ravi",
+        "state": "Punjab",
+        "lon": 75.72861,
+        "lat": 32.44389,
+        "dam_type": "earthfill",
+        "structural_height_m": 160.0,
+        "crest_length_m": 617.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3280.0,
+        "live_storage_mcm": 2340.0,
+        "reservoir_area_km2": 87.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1999,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Punjab, p.242 (PIC PB26VH0011, Dam Type column); Dams of National Importance p.24 Sl. No. 54 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Punjab, p.242 (PIC PB26VH0011, Dam Type column); Dams of National Importance p.24 Sl. No. 54 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Punjab, p.242 (PIC PB26VH0011, Dam Type column); Dams of National Importance p.24 Sl. No. 54 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Punjab, p.242 (PIC PB26VH0011, Dam Type column); Dams of National Importance p.24 Sl. No. 54 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Punjab, p.242 (PIC PB26VH0011, Dam Type column); Dams of National Importance p.24 Sl. No. 54 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Punjab, p.242 (PIC PB26VH0011, Dam Type column); Dams of National Importance p.24 Sl. No. 54 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Punjab, p.242 (PIC PB26VH0011, Dam Type column); Dams of National Importance p.24 Sl. No. 54 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Punjab, p.242 (PIC PB26VH0011, Dam Type column); Dams of National Importance p.24 Sl. No. 54 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.00611,
+          24.20278
+        ]
+      },
+      "properties": {
+        "id": "rihand",
+        "nrld_id": "NRLD:UP13HH0053",
+        "name": "RIHAND",
+        "river": "Rihand",
+        "state": "Uttar Pradesh",
+        "lon": 83.00611,
+        "lat": 24.20278,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 91.46,
+        "crest_length_m": 934.45,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 10600.0,
+        "live_storage_mcm": 8900.0,
+        "reservoir_area_km2": 466.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1962,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Uttar Pradesh, p.260 (PIC UP13HH0053, Dam Type column); Dams of National Importance p.24 Sl. No. 61 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Uttar Pradesh, p.260 (PIC UP13HH0053, Dam Type column); Dams of National Importance p.24 Sl. No. 61 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Uttar Pradesh, p.260 (PIC UP13HH0053, Dam Type column); Dams of National Importance p.24 Sl. No. 61 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Uttar Pradesh, p.260 (PIC UP13HH0053, Dam Type column); Dams of National Importance p.24 Sl. No. 61 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Uttar Pradesh, p.260 (PIC UP13HH0053, Dam Type column); Dams of National Importance p.24 Sl. No. 61 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Uttar Pradesh, p.260 (PIC UP13HH0053, Dam Type column); Dams of National Importance p.24 Sl. No. 61 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Uttar Pradesh, p.260 (PIC UP13HH0053, Dam Type column); Dams of National Importance p.24 Sl. No. 61 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Uttar Pradesh, p.260 (PIC UP13HH0053, Dam Type column); Dams of National Importance p.24 Sl. No. 61 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.75139,
+          21.82972
+        ]
+      },
+      "properties": {
+        "id": "sardar_sarover",
+        "nrld_id": "NRLD:GJ04VH0630",
+        "name": "Sardar Sarover",
+        "river": "Narmada",
+        "state": "Gujarat",
+        "lon": 73.75139,
+        "lat": 21.82972,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 163.0,
+        "crest_length_m": 1210.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 9500.0,
+        "live_storage_mcm": 5800.0,
+        "reservoir_area_km2": 348.67,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 2017,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Gujarat, p.84 (PIC GJ04VH0630, Dam Type column); Dams of National Importance p.21 Sl. No. 4 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Gujarat, p.84 (PIC GJ04VH0630, Dam Type column); Dams of National Importance p.21 Sl. No. 4 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Gujarat, p.84 (PIC GJ04VH0630, Dam Type column); Dams of National Importance p.21 Sl. No. 4 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Gujarat, p.84 (PIC GJ04VH0630, Dam Type column); Dams of National Importance p.21 Sl. No. 4 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Gujarat, p.84 (PIC GJ04VH0630, Dam Type column); Dams of National Importance p.21 Sl. No. 4 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Gujarat, p.84 (PIC GJ04VH0630, Dam Type column); Dams of National Importance p.21 Sl. No. 4 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Gujarat, p.84 (PIC GJ04VH0630, Dam Type column); Dams of National Importance p.21 Sl. No. 4 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Gujarat, p.84 (PIC GJ04VH0630, Dam Type column); Dams of National Importance p.21 Sl. No. 4 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.30361,
+          14.48861
+        ]
+      },
+      "properties": {
+        "id": "somasila_reservoir",
+        "nrld_id": "NRLD:AP01HH0062",
+        "name": "Somasila Reservoir",
+        "river": "Pennar",
+        "state": "Andhra Pradesh",
+        "lon": 79.30361,
+        "lat": 14.48861,
+        "dam_type": "earthfill",
+        "structural_height_m": 39.0,
+        "crest_length_m": 352.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2208.0,
+        "live_storage_mcm": 1990.0,
+        "reservoir_area_km2": 212.28,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1986,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01HH0062, Dam Type column); Dams of National Importance p.23 Sl. No. 36 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01HH0062, Dam Type column); Dams of National Importance p.23 Sl. No. 36 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01HH0062, Dam Type column); Dams of National Importance p.23 Sl. No. 36 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01HH0062, Dam Type column); Dams of National Importance p.23 Sl. No. 36 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01HH0062, Dam Type column); Dams of National Importance p.23 Sl. No. 36 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01HH0062, Dam Type column); Dams of National Importance p.23 Sl. No. 36 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01HH0062, Dam Type column); Dams of National Importance p.23 Sl. No. 36 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01HH0062, Dam Type column); Dams of National Importance p.23 Sl. No. 36 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.33861,
+          18.96889
+        ]
+      },
+      "properties": {
+        "id": "sriram_sagar_project_srsp",
+        "nrld_id": "NRLD:TL47HH0059",
+        "name": "Sriram Sagar Project (SRSP)",
+        "river": "Godavari",
+        "state": "Telangana",
+        "lon": 78.33861,
+        "lat": 18.96889,
+        "dam_type": "earthfill",
+        "structural_height_m": 43.0,
+        "crest_length_m": 15600.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3172.0,
+        "live_storage_mcm": 2320.0,
+        "reservoir_area_km2": 450.82,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1977,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47HH0059, Dam Type column); Dams of National Importance p.25 Sl. No. 68 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47HH0059, Dam Type column); Dams of National Importance p.25 Sl. No. 68 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47HH0059, Dam Type column); Dams of National Importance p.25 Sl. No. 68 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47HH0059, Dam Type column); Dams of National Importance p.25 Sl. No. 68 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47HH0059, Dam Type column); Dams of National Importance p.25 Sl. No. 68 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47HH0059, Dam Type column); Dams of National Importance p.25 Sl. No. 68 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47HH0059, Dam Type column); Dams of National Importance p.25 Sl. No. 68 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Telangana, p.266 (PIC TL47HH0059, Dam Type column); Dams of National Importance p.25 Sl. No. 68 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.89667,
+          16.08611
+        ]
+      },
+      "properties": {
+        "id": "srisailam_project_n_s_r_s_p",
+        "nrld_id": "NRLD:AP01VH0059",
+        "name": "Srisailam Project (N.S.R.S.P)",
+        "river": "Krishna",
+        "state": "Andhra Pradesh",
+        "lon": 78.89667,
+        "lat": 16.08611,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 145.0,
+        "crest_length_m": 512.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 6116.0,
+        "live_storage_mcm": 5830.0,
+        "reservoir_area_km2": 616.42,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1982,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01VH0059, Dam Type column); Dams of National Importance p.23 Sl. No. 35 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01VH0059, Dam Type column); Dams of National Importance p.23 Sl. No. 35 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01VH0059, Dam Type column); Dams of National Importance p.23 Sl. No. 35 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01VH0059, Dam Type column); Dams of National Importance p.23 Sl. No. 35 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01VH0059, Dam Type column); Dams of National Importance p.23 Sl. No. 35 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01VH0059, Dam Type column); Dams of National Importance p.23 Sl. No. 35 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01VH0059, Dam Type column); Dams of National Importance p.23 Sl. No. 35 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Andhra Pradesh, p.44 (PIC AP01VH0059, Dam Type column); Dams of National Importance p.23 Sl. No. 35 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.52667,
+          15.27611
+        ]
+      },
+      "properties": {
+        "id": "supa_dam",
+        "nrld_id": "NRLD:KA06VH0168",
+        "name": "Supa Dam",
+        "river": "Kali Nadi",
+        "state": "Karnataka",
+        "lon": 74.52667,
+        "lat": 15.27611,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 101.0,
+        "crest_length_m": 331.29,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 4178.0,
+        "live_storage_mcm": 4120.0,
+        "reservoir_area_km2": 129.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1987,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Karnataka, p.101 (PIC KA06VH0168, Dam Type column); Dams of National Importance p.21 Sl. No. 14 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Karnataka, p.101 (PIC KA06VH0168, Dam Type column); Dams of National Importance p.21 Sl. No. 14 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Karnataka, p.101 (PIC KA06VH0168, Dam Type column); Dams of National Importance p.21 Sl. No. 14 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Karnataka, p.101 (PIC KA06VH0168, Dam Type column); Dams of National Importance p.21 Sl. No. 14 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Karnataka, p.101 (PIC KA06VH0168, Dam Type column); Dams of National Importance p.21 Sl. No. 14 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Karnataka, p.101 (PIC KA06VH0168, Dam Type column); Dams of National Importance p.21 Sl. No. 14 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Karnataka, p.101 (PIC KA06VH0168, Dam Type column); Dams of National Importance p.21 Sl. No. 14 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Karnataka, p.101 (PIC KA06VH0168, Dam Type column); Dams of National Importance p.21 Sl. No. 14 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.97694,
+          22.56167
+        ]
+      },
+      "properties": {
+        "id": "tawa_dam",
+        "nrld_id": "NRLD:MP08HH0326",
+        "name": "TAWA DAM",
+        "river": "Tawa",
+        "state": "Madhya Pradesh",
+        "lon": 77.97694,
+        "lat": 22.56167,
+        "dam_type": "earthfill",
+        "structural_height_m": 57.92,
+        "crest_length_m": 1944.92,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2312.0,
+        "live_storage_mcm": 1940.0,
+        "reservoir_area_km2": 200.55,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1978,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "type_editions_disagree_2019_kept",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.117 (PIC MP08HH0326, Dam Type column); Dams of National Importance p.23 Sl. No. 34 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.117 (PIC MP08HH0326, Dam Type column); Dams of National Importance p.23 Sl. No. 34 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.117 (PIC MP08HH0326, Dam Type column); Dams of National Importance p.23 Sl. No. 34 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.117 (PIC MP08HH0326, Dam Type column); Dams of National Importance p.23 Sl. No. 34 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.117 (PIC MP08HH0326, Dam Type column); Dams of National Importance p.23 Sl. No. 34 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.117 (PIC MP08HH0326, Dam Type column); Dams of National Importance p.23 Sl. No. 34 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.117 (PIC MP08HH0326, Dam Type column); Dams of National Importance p.23 Sl. No. 34 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Madhya Pradesh, p.117 (PIC MP08HH0326, Dam Type column); Dams of National Importance p.23 Sl. No. 34 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.48,
+          30.37861
+        ]
+      },
+      "properties": {
+        "id": "tehri_hpp",
+        "nrld_id": "NRLD:UA34VH0012",
+        "name": "TEHRI HPP",
+        "river": "Bhagirathi",
+        "state": "Uttarakhand",
+        "lon": 78.48,
+        "lat": 30.37861,
+        "dam_type": "earthfill",
+        "structural_height_m": 260.5,
+        "crest_length_m": 575.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3540.0,
+        "live_storage_mcm": 2620.0,
+        "reservoir_area_km2": 52.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 2006,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Uttarakhand, p.263 (PIC UA34VH0012, Dam Type column); Dams of National Importance p.25 Sl. No. 66 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Uttarakhand, p.263 (PIC UA34VH0012, Dam Type column); Dams of National Importance p.25 Sl. No. 66 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Uttarakhand, p.263 (PIC UA34VH0012, Dam Type column); Dams of National Importance p.25 Sl. No. 66 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Uttarakhand, p.263 (PIC UA34VH0012, Dam Type column); Dams of National Importance p.25 Sl. No. 66 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Uttarakhand, p.263 (PIC UA34VH0012, Dam Type column); Dams of National Importance p.25 Sl. No. 66 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Uttarakhand, p.263 (PIC UA34VH0012, Dam Type column); Dams of National Importance p.25 Sl. No. 66 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Uttarakhand, p.263 (PIC UA34VH0012, Dam Type column); Dams of National Importance p.25 Sl. No. 66 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Uttarakhand, p.263 (PIC UA34VH0012, Dam Type column); Dams of National Importance p.25 Sl. No. 66 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.33333,
+          15.25528
+        ]
+      },
+      "properties": {
+        "id": "tungabhadra_dam",
+        "nrld_id": "NRLD:KA06HH0036",
+        "name": "Tungabhadra Dam",
+        "river": "Tungabhadra",
+        "state": "Karnataka",
+        "lon": 76.33333,
+        "lat": 15.25528,
+        "dam_type": "earthfill",
+        "structural_height_m": 49.39,
+        "crest_length_m": 2449.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3738.0,
+        "live_storage_mcm": 3310.0,
+        "reservoir_area_km2": 378.1,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1953,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Karnataka, p.94 (PIC KA06HH0036, Dam Type column); Dams of National Importance p.22 Sl. No. 18 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Karnataka, p.94 (PIC KA06HH0036, Dam Type column); Dams of National Importance p.22 Sl. No. 18 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Karnataka, p.94 (PIC KA06HH0036, Dam Type column); Dams of National Importance p.22 Sl. No. 18 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Karnataka, p.94 (PIC KA06HH0036, Dam Type column); Dams of National Importance p.22 Sl. No. 18 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Karnataka, p.94 (PIC KA06HH0036, Dam Type column); Dams of National Importance p.22 Sl. No. 18 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Karnataka, p.94 (PIC KA06HH0036, Dam Type column); Dams of National Importance p.22 Sl. No. 18 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2019 state-wise dam details, Dam Type column — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Karnataka, p.94 (PIC KA06HH0036, Dam Type column); Dams of National Importance p.22 Sl. No. 18 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Karnataka, p.94 (PIC KA06HH0036, Dam Type column); Dams of National Importance p.22 Sl. No. 18 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.12111,
+          18.07472
+        ]
+      },
+      "properties": {
+        "id": "ujjani",
+        "nrld_id": "NRLD:MH09HH0843",
+        "name": "UJJANI",
+        "river": "Bhima",
+        "state": "Maharashtra",
+        "lon": 75.12111,
+        "lat": 18.07472,
+        "dam_type": "earthfill",
+        "structural_height_m": 56.4,
+        "crest_length_m": 3141.4,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 3320.0,
+        "live_storage_mcm": 1520.0,
+        "reservoir_area_km2": 290.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1980,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Maharashtra, p.166 (PIC MH09HH0843, Dam Type column); Dams of National Importance p.23 Sl. No. 40 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Maharashtra, p.166 (PIC MH09HH0843, Dam Type column); Dams of National Importance p.23 Sl. No. 40 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Maharashtra, p.166 (PIC MH09HH0843, Dam Type column); Dams of National Importance p.23 Sl. No. 40 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Maharashtra, p.166 (PIC MH09HH0843, Dam Type column); Dams of National Importance p.23 Sl. No. 40 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Maharashtra, p.166 (PIC MH09HH0843, Dam Type column); Dams of National Importance p.23 Sl. No. 40 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Maharashtra, p.166 (PIC MH09HH0843, Dam Type column); Dams of National Importance p.23 Sl. No. 40 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Maharashtra, p.166 (PIC MH09HH0843, Dam Type column); Dams of National Importance p.23 Sl. No. 40 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Maharashtra, p.166 (PIC MH09HH0843, Dam Type column); Dams of National Importance p.23 Sl. No. 40 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.58944,
+          21.24806
+        ]
+      },
+      "properties": {
+        "id": "ukai_dam",
+        "nrld_id": "NRLD:GJ04HH0222",
+        "name": "Ukai Dam",
+        "river": "Tapi",
+        "state": "Gujarat",
+        "lon": 73.58944,
+        "lat": 21.24806,
+        "dam_type": "earthfill",
+        "structural_height_m": 80.77,
+        "crest_length_m": 4927.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 7414.0,
+        "live_storage_mcm": 6730.0,
+        "reservoir_area_km2": 612.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1972,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "river_name_approximate",
+          "type_composite_embankment_section_governs",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Gujarat, p.71 (PIC GJ04HH0222, Dam Type column); Dams of National Importance p.21 Sl. No. 2 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Gujarat, p.71 (PIC GJ04HH0222, Dam Type column); Dams of National Importance p.21 Sl. No. 2 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Gujarat, p.71 (PIC GJ04HH0222, Dam Type column); Dams of National Importance p.21 Sl. No. 2 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Gujarat, p.71 (PIC GJ04HH0222, Dam Type column); Dams of National Importance p.21 Sl. No. 2 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Gujarat, p.71 (PIC GJ04HH0222, Dam Type column); Dams of National Importance p.21 Sl. No. 2 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Gujarat, p.71 (PIC GJ04HH0222, Dam Type column); Dams of National Importance p.21 Sl. No. 2 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Gujarat, p.71 (PIC GJ04HH0222, Dam Type column); Dams of National Importance p.21 Sl. No. 2 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Gujarat, p.71 (PIC GJ04HH0222, Dam Type column); Dams of National Importance p.21 Sl. No. 2 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.82972,
+          19.27694
+        ]
+      },
+      "properties": {
+        "id": "upper_indravati",
+        "nrld_id": "NRLD:OR10HH0145",
+        "name": "UPPER INDRAVATI",
+        "river": "Indravati",
+        "state": "Odisha",
+        "lon": 82.82972,
+        "lat": 19.27694,
+        "dam_type": "concrete_gravity",
+        "structural_height_m": 45.0,
+        "crest_length_m": 949.0,
+        "crest_elevation_m": null,
+        "frl_m": null,
+        "mddl_m": null,
+        "gross_storage_mcm": 2300.0,
+        "live_storage_mcm": 1500.0,
+        "reservoir_area_km2": 110.0,
+        "spillway_capacity_m3s": null,
+        "commissioned_year": 1996,
+        "height_basis": "above_lowest_foundation_level",
+        "volume_basis": "gross_storage_capacity",
+        "coord_precision_m": 30.0,
+        "notes": [
+          "shared_reservoir_upper_indravati_do_not_sum_storage",
+          "No published FRL/MDDL in the NRLD transcription: frl_m and mddl_m are null. Operating levels come from the DEM-derived elevation-area-capacity curve (Phase 2) and are cross-checked against gross_storage_mcm recorded here."
+        ],
+        "sources": {
+          "structural_height_m": "NRLD-2019 — NRLD-2019; Odisha, p.237 (PIC OR10HH0145, Dam Type column); Dams of National Importance p.24 Sl. No. 50 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "crest_length_m": "NRLD-2019 — NRLD-2019; Odisha, p.237 (PIC OR10HH0145, Dam Type column); Dams of National Importance p.24 Sl. No. 50 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "gross_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.237 (PIC OR10HH0145, Dam Type column); Dams of National Importance p.24 Sl. No. 50 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "live_storage_mcm": "NRLD-2019 — NRLD-2019; Odisha, p.237 (PIC OR10HH0145, Dam Type column); Dams of National Importance p.24 Sl. No. 50 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "reservoir_area_km2": "NRLD-2019 — NRLD-2019; Odisha, p.237 (PIC OR10HH0145, Dam Type column); Dams of National Importance p.24 Sl. No. 50 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "commissioned_year": "NRLD-2019 — NRLD-2019; Odisha, p.237 (PIC OR10HH0145, Dam Type column); Dams of National Importance p.24 Sl. No. 50 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lon": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "lat": "NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "dam_type": "NRLD-2018 state sheets, dam-type abbreviation (legend: TE=Earth, ER=Rock Fill, PG=Gravity/Masonry) — https://cwc.gov.in/sites/default/files/nrld06042018.pdf",
+          "river": "NRLD-2019 — NRLD-2019; Odisha, p.237 (PIC OR10HH0145, Dam Type column); Dams of National Importance p.24 Sl. No. 50 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf",
+          "state": "NRLD-2019 — NRLD-2019; Odisha, p.237 (PIC OR10HH0145, Dam Type column); Dams of National Importance p.24 Sl. No. 50 — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+        }
+      }
+    }
+  ]
+}

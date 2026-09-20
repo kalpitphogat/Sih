@@ -1,0 +1,124 @@
+# FloodGuard India — demo scenario 1
+#
+# Tehri Dam, Uttarakhand. India's tallest dam (260.5 m), on the BHAGIRATHI.
+#
+# Geography note, because it is routinely got wrong: the Bhagirathi meets the
+# Alaknanda at DEVPRAYAG to form the Ganga. The Ganga then flows through
+# Rishikesh and Haridwar. Tehri is NOT on the Alaknanda.
+#
+# This is steep Himalayan terrain: a narrow, fast, deep flood wave with short
+# warning times. Contrast with hirakud_mahanadi.yaml, which is flat and wide.
+
+id: tehri_bhagirathi
+name: "Tehri Dam break — Bhagirathi to Ganga"
+description: >
+  Complete breach of Tehri Dam at full reservoir level, routed down the
+  Bhagirathi through the Devprayag confluence into the Ganga, past Rishikesh
+  to Haridwar. Steep, confined Himalayan valley.
+
+scenario_type: complete_dam_break
+
+dam:
+  id: tehri_hpp
+  name: "TEHRI HPP"
+  river: Bhagirathi
+  state: Uttarakhand
+  lon: 78.48000
+  lat: 30.37861
+  dam_type: earthfill           # NRLD composite; the embankment section governs
+  structural_height_m: 260.5
+  crest_length_m: 575.0
+  crest_elevation_m: 839.5
+  frl_m: 830.0
+  mddl_m: 740.0
+  gross_storage_mcm: 3540.0
+  live_storage_mcm: 2620.0
+  commissioned_year: 2006
+  sources:
+    structural_height_m: "CWC NRLD-2019, Uttarakhand p.263 (PIC UA34VH0012) — https://cwc.gov.in/sites/default/files/nrld-2019.pdf"
+    crest_length_m: "CWC NRLD-2019, Uttarakhand p.263 (PIC UA34VH0012)"
+    gross_storage_mcm: "CWC NRLD-2019, Uttarakhand p.263 (PIC UA34VH0012)"
+    live_storage_mcm: "CWC NRLD-2019, Uttarakhand p.263 (PIC UA34VH0012)"
+    lon: "CWC NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS), ~30 m precision"
+    lat: "CWC NRLD-2019 state-wise dam details, Latitude/Longitude columns (DMS), ~30 m precision"
+    commissioned_year: "CWC NRLD-2019, Uttarakhand p.263"
+    frl_m: "THDC India Ltd / Tehri HPP project literature. NOT in the NRLD tables — flagged for verification against the DEM-derived elevation-area-capacity curve in Phase 2."
+    mddl_m: "THDC India Ltd / Tehri HPP project literature. NOT in the NRLD tables — flagged for verification."
+    crest_elevation_m: "Derived as FRL + 9.5 m freeboard per THDC project literature. FLAGGED: verify against the DEM at the dam axis before quoting."
+
+breach:
+  shape: trapezoidal
+  growth: linear
+  side_slope: 1.0
+  # width_m, depth_m and formation_time_min are deliberately unset: the
+  # empirical models (Froehlich 2008 by default) predict them, and the UI shows
+  # the prediction next to any value the user types.
+  parameter_model: froehlich_2008
+
+reservoir:
+  initial_level_m: 830.0        # at FRL — the worst credible case
+  inflow_m3s: 0.0
+  spillway_active: false
+
+domain:
+  reach_length_km: 120.0        # Tehri -> Devprayag -> Rishikesh -> Haridwar
+  corridor_buffer_km: 5.0
+  resolution_m: 30.0
+  crs: "EPSG:32644"             # UTM 44N
+
+solver:
+  duration_hours: 6.0
+  cfl: 0.45
+  dry_tolerance_m: 0.001
+  wet_threshold_m: 0.3
+  output_interval_s: 300.0
+  default_manning_n: 0.035
+  manning_n_overrides:
+    channel: 0.030
+    forest: 0.100
+    urban: 0.080
+    agriculture: 0.050
+    bare: 0.025
+  second_order: true
+
+dem:
+  sources: [copernicus_s3, planetary_computer, opentopography]
+  resolution_m: 30.0
+
+towns:
+  - name: Devprayag
+    lon: 78.5980
+    lat: 30.1460
+    approx_km_downstream: 60
+    population: 2152
+    population_source: "Census of India 2011, town directory"
+  - name: Rishikesh
+    lon: 78.2676
+    lat: 30.0869
+    approx_km_downstream: 95
+    population: 102138
+    population_source: "Census of India 2011"
+  - name: Haridwar
+    lon: 78.1642
+    lat: 29.9457
+    approx_km_downstream: 120
+    population: 228832
+    population_source: "Census of India 2011"
+
+engines: [swe_fv]
+
+notes:
+  - >
+    Devprayag is the Bhagirathi-Alaknanda confluence. This model routes the
+    Bhagirathi limb only; the Alaknanda's own discharge is applied as a
+    downstream boundary inflow, not simulated. A real confluence study would
+    model both limbs.
+  - >
+    FRL, MDDL and crest elevation are not in the CWC NRLD tables and come from
+    project literature. Phase 2 derives the elevation-area-capacity curve from
+    the DEM and reports the percentage difference against the NRLD gross
+    storage of 3540 MCM. Read that number before trusting the depths.
+  - >
+    Copernicus GLO-30 is a surface model (DSM), not a bare-earth model. In
+    forested Himalayan valleys it sits above true ground, which biases computed
+    depths low and arrival times late.
