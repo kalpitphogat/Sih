@@ -43,10 +43,10 @@ reason §2.2 exists.
 
 Published NRLD coordinates are single points of unstated convention at roughly
 30 m precision, so they frequently land on an abutment rather than in the
-channel. The dam is snapped to the highest-accumulation cell within 300 m, and
-the snap distance is reported. At Tehri it moves 285–306 m and lands on the
-channel *below* the embankment, which is where breach outflow physically enters
-the valley.
+channel. The dam is snapped to the highest-accumulation cell within `max(500 m,
+crest_length / 2)` — see §2.3 for why a fixed radius fails — and the snap
+distance is reported. At Tehri it moves 285–306 m and lands on the channel
+*below* the embankment, which is where breach outflow physically enters the valley.
 
 ### 1.4 Domain
 
@@ -111,7 +111,47 @@ structural height (260.5 m) gives 579 m. At 30 m resolution the two agree to
 2 m from entirely separate data paths — the DEM on one side, the dam register
 on the other.
 
-### 2.3 Elevation–area–capacity curve
+### 2.3 When the DEM cannot delineate the pool
+
+The Tehri result above is the favourable case: a deep reservoir in a confined
+gorge, where a 30 m DSM resolves the pool almost exactly. Hirakud is the
+unfavourable case, and it is worth stating plainly because it generalises.
+
+Hirakud impounds **743 km²** of large, shallow, dendritic water on flat deltaic
+terrain. At 120 m resolution the DEM delineates **212 km²** of it. Two things
+defeat it: narrow arms fall below the cell size, and the flat water surface
+gives the drainage network no gradient to follow, so D8 accumulation across the
+pool is diffuse and the catchment boundary becomes unreliable.
+
+Three consequences, each with a guard:
+
+1. **The snap radius must scale with the dam.** A fixed 300 m window is right
+   for Tehri's 575 m crest and badly wrong for Hirakud's 4.8 km embankment,
+   where it snapped to a local drain and produced a 28 km² catchment for a dam
+   that drains 83,000 km². The radius is now `max(500 m, crest_length / 2)`.
+
+2. **Flow accumulation is only meaningful inside the fetched raster.** A dam
+   whose catchment dwarfs the domain will snap to a tributary and nothing about
+   the arithmetic will look wrong. If the snapped cell carries less than 5% of
+   the domain's largest drainage, the run warns that the reservoir, the routed
+   path and every downstream number should be treated as wrong.
+
+3. **The reconstruction must be refused, not qualified, when it is impossible.**
+   §2.2 solves for whatever bed depth makes the storage match, so a pool 500×
+   too small yields a bed 1,000 m too deep — at Hirakud, −957 m MSL for a 61 m
+   dam. Any bed below the dam's own foundation is now rejected outright. The
+   numbers that follow an impossible geometry are not worth caveating; they are
+   worth withholding.
+
+**The escape hatch is the professional input.** Dam authorities publish the
+reservoir surface area at FRL and the full elevation–area–capacity curve, so
+`reservoir.area_at_frl_km2` accepts it with a cited source. For Hirakud,
+supplying the published 743 km² moves derived storage from **−92%** to
+**−4.4%** against the NRLD, with a bed at 160 m MSL — comfortably above the
+135 m foundation. The substitution is recorded and warned about, so a reader
+knows the area came from the operator rather than from the terrain.
+
+### 2.4 Elevation–area–capacity curve
 
 At each sampled level the connected pool is re-delineated and storage computed
 as `Σ (level − bed) · cell_area` over submerged cells. Summing the prism depth
@@ -358,6 +398,8 @@ non-events will not be read.
 
 1. **DSM, not DTM.** Depths biased low and arrival late under forest canopy.
 2. **Reconstructed bathymetry.** Calibrated to registered storage, not surveyed.
+   On flat dendritic reservoirs the DEM cannot even delineate the pool, and the
+   published surface area must be supplied — see §2.3.
 3. **Uniform Manning's n** unless a land-cover raster is supplied. Friction is
    the second most sensitive parameter after resolution.
 4. **Breach geometry dominates.** The empirical models disagree by more than the
