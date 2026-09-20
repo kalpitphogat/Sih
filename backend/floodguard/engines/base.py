@@ -140,6 +140,18 @@ class EngineInput:
     second_order: bool = True
     max_steps: int = 2_000_000
 
+    #: Cells the breach discharges through, with weights summing to 1.
+    #:
+    #: A breach is a finite opening, not a point. Tehri's predicted breach is
+    #: 498 m wide; at 90 m resolution that is five and a half cells. Injecting
+    #: the whole 1.29 million m3/s peak into ONE 8,100 m2 cell adds 64 m of
+    #: water to it in a single timestep, which then collapses as a numerical
+    #: artefact the real breach would never produce — and drives the CFL
+    #: timestep towards zero while it does. Spreading the discharge over the
+    #: breach face is both the physically correct boundary condition and the
+    #: difference between a tractable run and an intractable one.
+    source_cells: list[tuple[int, int, float]] = field(default_factory=list)
+
     #: Initial depth field. None means a dry bed everywhere.
     initial_depth: np.ndarray | None = None
 

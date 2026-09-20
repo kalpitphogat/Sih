@@ -91,6 +91,26 @@ class ShallowWaterFV(Engine):
             )
         cell_area = spec.cell_area_m2
 
+        # The breach face. Falls back to the single release cell only when the
+        # caller supplied no footprint.
+        source_cells = [
+            (r, c, w)
+            for r, c, w in (spec.source_cells or [(src_r, src_c, 1.0)])
+            if 0 <= r < rows and 0 <= c < cols and active[r, c]
+        ]
+        if not source_cells:
+            source_cells = [(src_r, src_c, 1.0)]
+        weight_sum = sum(w for _, _, w in source_cells)
+        source_cells = [(r, c, w / weight_sum) for r, c, w in source_cells]
+        source_rows = np.array([r for r, _, _ in source_cells], dtype=np.int64)
+        source_cols = np.array([c for _, c, _ in source_cells], dtype=np.int64)
+        source_weights = np.array([w for _, _, w in source_cells], dtype=np.float64)
+        log.info(
+            "breach discharges through %d cell(s) (%.0f m2 of face)",
+            len(source_cells),
+            len(source_cells) * cell_area,
+        )
+
         frames: list[tuple[float, np.ndarray]] = []
         warnings: list[str] = []
 
@@ -119,8 +139,10 @@ class ShallowWaterFV(Engine):
             # --- inflow: the breach hydrograph, as a mass source ---
             q = spec.inflow_q(t + 0.5 * dt)
             if q > 0.0:
-                added = q * dt / cell_area
-                h[src_r, src_c] += added
+                # Spread over the breach face, weighted. Adding the total to one
+                # cell would create a water column tens of metres tall in a
+                # single step and stall the timestep.
+                h[source_rows, source_cols] += source_weights * (q * dt / cell_area)
                 volume_in += q * dt
 
             dt = self._step(
@@ -251,6 +273,8 @@ class ShallowWaterFV(Engine):
                 "simulated_to_s": t,
                 "steps": step,
                 "volume_introduced_m3": volume_in,
+                "breach_source_cells": len(source_cells),
+                "breach_source_area_m2": len(source_cells) * cell_area,
                 "volume_remaining_m3": final_volume,
                 "mass_error": float(mass_error),
                 "cells_dried_by_positivity": cells_dried,

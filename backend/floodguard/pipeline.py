@@ -270,10 +270,48 @@ def crop_to_active(
     return slice(r0, r1), slice(c0, c1), window_transform
 
 
+def breach_face_cells(
+    active: np.ndarray,
+    release_rc: tuple[int, int],
+    breach_width_m: float,
+    cell_size_m: float,
+) -> list[tuple[int, int, float]]:
+    """Cells the breach discharges through, with weights summing to 1.
+
+    The footprint is a disc of radius half the breach width, centred on the
+    release point and clipped to the active domain. Weights fall off linearly
+    from the centre, which approximates a breach discharging most strongly at
+    its middle.
+
+    A breach narrower than one cell still gets its own cell, so the boundary
+    condition never disappears; it is simply resolved as a point, and the
+    provenance records how many cells carried it.
+    """
+    r0, c0 = release_rc
+    radius_cells = max(breach_width_m / (2.0 * cell_size_m), 0.5)
+    reach = int(np.ceil(radius_cells))
+
+    cells: list[tuple[int, int, float]] = []
+    for dr in range(-reach, reach + 1):
+        for dc in range(-reach, reach + 1):
+            r, c = r0 + dr, c0 + dc
+            if not (0 <= r < active.shape[0] and 0 <= c < active.shape[1]):
+                continue
+            if not active[r, c]:
+                continue
+            distance = float(np.hypot(dr, dc))
+            if distance > radius_cells:
+                continue
+            cells.append((r, c, max(1.0 - distance / (radius_cells + 1e-9), 0.1)))
+
+    return cells or [(r0, c0, 1.0)]
+
+
 def _build_engine_input(
     scenario: Scenario,
     pre: PreprocessResult,
     hydrograph: routing.Hydrograph,
+    breach_width_m: float = 0.0,
 ) -> tuple[EngineInput, tuple[slice, slice]]:
     """Assemble the solver's input, cropped to the active corridor."""
     bed_full = np.where(pre.dem < -1000, np.nan, pre.dem)
@@ -302,6 +340,8 @@ def _build_engine_input(
         100 * (1 - active.size / active_full.size),
     )
 
+    face = breach_face_cells(active, src_cropped, breach_width_m, pre.cell_size_m)
+
     spec = EngineInput(
         bed_elevation=bed,
         manning_n=manning,
@@ -310,6 +350,7 @@ def _build_engine_input(
         transform=transform,
         crs=pre.crs,
         source_rc=src_cropped,
+        source_cells=face,
         inflow_q=hydrograph.q_at,
         inflow_volume_m3=hydrograph.total_volume_m3,
         duration_s=scenario.solver.duration_hours * 3600.0,
@@ -431,7 +472,9 @@ def simulate(
     )
 
     # --- Phase 4 ---
-    spec, window = _build_engine_input(scenario, pre, hydrograph)
+    spec, window = _build_engine_input(
+        scenario, pre, hydrograph, breach_width_m=used.width_m
+    )
     requested = engines or scenario.engines
 
     for i, engine_id in enumerate(requested):
