@@ -14,7 +14,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health
+from app.api import catalog, health, results, simulate
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -46,6 +46,24 @@ app.add_middleware(
 )
 
 app.include_router(health.router)
+app.include_router(catalog.router)
+app.include_router(simulate.router)
+app.include_router(results.router)
+
+
+@app.on_event("startup")
+def _start_job_runner() -> None:
+    """Bring the job runner up with the app, and mark any orphaned jobs.
+
+    A job recorded as running when the process died did not survive it, and
+    leaving it as 'running' would have the UI wait forever.
+    """
+    simulate.get_runner()
+
+
+@app.on_event("shutdown")
+def _stop_job_runner() -> None:
+    simulate.get_runner().stop()
 
 
 @app.get("/", include_in_schema=False)
