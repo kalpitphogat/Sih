@@ -199,7 +199,62 @@ class SimulationResult:
         }
 
 
-ENGINE_CLASSES = {"swe_fv": ShallowWaterFV}
+def _engine_classes() -> dict[str, type]:
+    """Engine registry, imported lazily.
+
+    Adapters import netCDF4/xarray at module scope in places, so importing them
+    eagerly would make an optional dependency a hard one.
+    """
+    from floodguard.engines.anuga_engine import AnugaEngine
+    from floodguard.engines.delft3d_adapter import Delft3DAdapter
+    from floodguard.engines.dualsphysics_adapter import DualSPHysicsAdapter
+    from floodguard.engines.sph_pysph import PySPHEngine
+
+    return {
+        "swe_fv": ShallowWaterFV,
+        "anuga": AnugaEngine,
+        "delft3d": Delft3DAdapter,
+        "sph_pysph": PySPHEngine,
+        "dualsphysics": DualSPHysicsAdapter,
+    }
+
+
+#: Engines whose input deck is a deliverable in its own right, generated
+#: whether or not the solver exists on this machine.
+DECK_WRITERS = ("delft3d", "dualsphysics")
+
+
+def write_engine_decks(
+    requested: list[str], spec: EngineInput, out_dir: Path
+) -> dict[str, dict[str, Path]]:
+    """Write the input decks for any requested external engine.
+
+    "Here is the Delft3D input deck our tool generated from a DEM and a dam
+    record" is a legitimate deliverable on its own — it is what a hydraulics
+    team would otherwise assemble by hand over days. So the deck is produced
+    even when the solver is absent, and offered for download.
+    """
+    written: dict[str, dict[str, Path]] = {}
+
+    for engine_id in requested:
+        if engine_id not in DECK_WRITERS:
+            continue
+        try:
+            if engine_id == "delft3d":
+                from floodguard.engines.delft3d_adapter import write_case
+
+                written[engine_id] = write_case(spec, out_dir / "delft3d_case")
+            else:
+                from floodguard.engines.dualsphysics_adapter import write_case as write_dsph
+
+                written[engine_id] = write_dsph(spec, out_dir / "dualsphysics_case", 5.0)
+        except Exception as exc:  # noqa: BLE001 - a deck failure must not stop the solve
+            log.warning("could not write the %s deck: %s", engine_id, exc)
+
+    return written
+
+
+ENGINE_CLASSES: dict[str, type] = {}
 
 
 def _select_engine(engine_id: str) -> EngineRun:
@@ -211,7 +266,8 @@ def _select_engine(engine_id: str) -> EngineRun:
     """
     status = resolve(engine_id)
 
-    if status.available and engine_id in ENGINE_CLASSES:
+    classes = _engine_classes()
+    if status.available and engine_id in classes:
         return EngineRun(
             requested_id=engine_id,
             actual_id=engine_id,
@@ -222,7 +278,7 @@ def _select_engine(engine_id: str) -> EngineRun:
         )
 
     substitute_id = status.substitute_id
-    if not substitute_id or substitute_id not in ENGINE_CLASSES:
+    if not substitute_id or substitute_id not in classes:
         raise EngineUnavailable(
             engine_id,
             f"{status.detail} No implemented substitute is available either.",
@@ -477,6 +533,15 @@ def simulate(
     )
     requested = engines or scenario.engines
 
+    decks = write_engine_decks(requested, spec, out_dir)
+    for engine_id, files in decks.items():
+        log.info("wrote a %s input deck: %s", engine_id, sorted(f.name for f in files.values()))
+        warnings.append(
+            f"A complete {engine_id} input deck was generated at "
+            f"{out_dir / (engine_id + '_case')} and is downloadable, independently of "
+            f"whether that solver ran here."
+        )
+
     for i, engine_id in enumerate(requested):
         try:
             run = _select_engine(engine_id)
@@ -509,7 +574,7 @@ def simulate(
                 **extra,
             )
 
-        engine = ENGINE_CLASSES[run.actual_id]()
+        engine = _engine_classes()[run.actual_id]()
         try:
             run.bundle = engine.run(spec, engine_progress)
             warnings.extend(run.bundle.warnings)
