@@ -68,3 +68,58 @@ def health_packages() -> dict:
         "matplotlib", "reportlab", "earthengine-api",
     ]
     return {name: package_version(name) for name in names}
+
+
+@router.get("/api/validation")
+def validation_results() -> dict:
+    """The solver verification results, as computed by `make validate`.
+
+    Served from the file the verification run wrote, so the About page cannot
+    display a passing result that was not actually produced. When the file is
+    absent the page says the suite has not been run rather than showing
+    reassuring defaults.
+    """
+    import json
+
+    from app.core.config import REPO_ROOT
+
+    path = REPO_ROOT / "docs" / "validation" / "results.json"
+    if not path.exists():
+        return {
+            "available": False,
+            "detail": (
+                "No verification results at docs/validation/results.json. Run "
+                "`make validate` to produce them. Until then this deployment makes no "
+                "claim about solver accuracy."
+            ),
+            "checks": [],
+        }
+
+    try:
+        report = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return {"available": False, "detail": f"results.json is unreadable: {exc}", "checks": []}
+
+    return {
+        "available": True,
+        "passed": report.get("passed", False),
+        "runtime_s": report.get("runtime_s"),
+        "generated_from": str(path),
+        "checks": [
+            {
+                "name": c["name"],
+                "passed": c["passed"],
+                "threshold": c["threshold"],
+                "note": c.get("note", ""),
+                "plot": c.get("plot"),
+                "metrics": c.get("metrics", {}),
+            }
+            for c in report.get("checks", [])
+        ],
+        "caveat": (
+            "Verification is not validation. These are comparisons against exact "
+            "analytical solutions, so passing them means the numerics are right. It "
+            "says nothing about whether the DEM, the breach parameters, the roughness "
+            "field or the reconstructed reservoir bathymetry describe the real river."
+        ),
+    }

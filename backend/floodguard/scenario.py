@@ -130,6 +130,19 @@ class ReservoirState(BaseModel):
     #: Whether the spillway is discharging alongside the breach.
     spillway_active: bool = False
 
+    #: Published reservoir surface area at FRL, km2.
+    #:
+    #: An escape hatch for the case a 30-120 m surface model cannot handle: a
+    #: large, shallow, dendritic reservoir on flat terrain, where the DEM
+    #: delineates a fraction of the real pool and the bathymetry reconstruction
+    #: then solves for an impossible bed. Hirakud impounds 743 km2 and the DEM
+    #: finds 212. Dam authorities publish this number and the full
+    #: elevation-area-capacity curve, so supplying it is not a workaround but
+    #: the normal professional input. When set, it replaces the DEM-derived
+    #: area in the reconstruction and the substitution is recorded.
+    area_at_frl_km2: float | None = Field(default=None, gt=0)
+    area_source: str | None = None
+
 
 class DomainSpec(BaseModel):
     """The compute domain: how far downstream, at what resolution."""

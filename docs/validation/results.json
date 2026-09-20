@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_s": 79.81424990016967,
+  "runtime_s": 20.4017676000949,
   "checks": [
     {
       "name": "Ritter dry-bed dam break",

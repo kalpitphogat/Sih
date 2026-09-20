@@ -277,6 +277,9 @@ def reconstruct_bathymetry(
     *,
     shape_exponent: float = 2.0,
     n_levels: int = 25,
+    min_bed_elevation_m: float | None = None,
+    published_area_m2: float | None = None,
+    area_source: str | None = None,
 ) -> tuple[ElevationAreaCapacity, dict[str, Any]]:
     """Extend the E-A-C curve below an observed water surface.
 
@@ -303,7 +306,8 @@ def reconstruct_bathymetry(
     returned metadata, and every result depending on reservoir volume carries
     that label. A real study would use a bathymetric survey.
     """
-    area_ws = curve.area_at(water_surface_m)
+    dem_area_ws = curve.area_at(water_surface_m)
+    area_ws = published_area_m2 if published_area_m2 else dem_area_ws
     storage_visible = float(curve.volumes_m3[-1])
     missing = target_storage_m3 - storage_visible
 
@@ -311,6 +315,12 @@ def reconstruct_bathymetry(
         "method": "conic reservoir approximation calibrated to registered gross storage",
         "water_surface_m": water_surface_m,
         "water_surface_area_km2": area_ws / 1e6,
+        "dem_derived_area_km2": dem_area_ws / 1e6,
+        "area_source": (
+            area_source or "published value supplied in the scenario"
+            if published_area_m2
+            else "DEM-derived"
+        ),
         "shape_exponent_m": shape_exponent,
         "visible_storage_mcm": storage_visible / 1e6,
         "target_storage_mcm": target_storage_m3 / 1e6,
@@ -328,6 +338,28 @@ def reconstruct_bathymetry(
 
     depth_below = missing * (shape_exponent + 1.0) / area_ws
     z_bed = water_surface_m - depth_below
+
+    # Physical guard. The reconstruction solves for whatever bed depth makes the
+    # storage match, so if the delineated pool area is far too small it will
+    # happily return a bed hundreds of metres below sea level. At Hirakud a
+    # mis-snapped dam gave a 0.4 km2 pool against a real 743 km2, and the
+    # arithmetic duly produced a bed at -957 m MSL for a 61 m dam. That is not a
+    # number to warn about and carry on with: it means the pool is wrong, and
+    # every volume-dependent result after it would be wrong too.
+    if min_bed_elevation_m is not None and z_bed < min_bed_elevation_m:
+        meta["applied"] = False
+        meta["rejected_bed_elevation_m"] = z_bed
+        meta["min_bed_elevation_m"] = min_bed_elevation_m
+        meta["reason"] = (
+            f"the reconstruction implies a bed at {z_bed:,.0f} m MSL, which is below the "
+            f"dam's own foundation at {min_bed_elevation_m:,.0f} m MSL and therefore "
+            f"impossible. The cause is almost always a delineated pool far smaller than "
+            f"the real reservoir — check the dam snap distance and the catchment area. "
+            f"The reconstruction is REFUSED rather than applied, so storage-dependent "
+            f"results for this scenario are not usable."
+        )
+        return curve, meta
+
     meta["applied"] = True
     meta["bed_elevation_m"] = z_bed
     meta["reconstructed_depth_m"] = depth_below
@@ -380,6 +412,9 @@ def build(
     n_levels: int = 60,
     catchment_mask: np.ndarray | None = None,
     reconstruct: bool = True,
+    min_bed_elevation_m: float | None = None,
+    published_area_m2: float | None = None,
+    area_source: str | None = None,
 ) -> ReservoirGeometry:
     """Delineate the pool, derive the curve, and cross-check against the catalog.
 
@@ -412,7 +447,12 @@ def build(
             }
         else:
             curve, bathymetry = reconstruct_bathymetry(
-                curve, water_surface, catalog_gross_storage_mcm * 1e6
+                curve,
+                water_surface,
+                catalog_gross_storage_mcm * 1e6,
+                min_bed_elevation_m=min_bed_elevation_m,
+                published_area_m2=published_area_m2,
+                area_source=area_source,
             )
 
     derived_m3 = curve.volume_at(frl_m)
@@ -421,6 +461,24 @@ def build(
 
     diff_pct: float | None = None
     warnings: list[str] = []
+
+    if bathymetry.get("rejected_bed_elevation_m") is not None:
+        warnings.append(
+            "Reservoir bathymetry reconstruction was REFUSED. "
+            + bathymetry.get("reason", "")
+        )
+
+    if bathymetry.get("applied") and bathymetry.get("dem_derived_area_km2") is not None:
+        dem_area = bathymetry["dem_derived_area_km2"]
+        used_area = bathymetry["water_surface_area_km2"]
+        if abs(used_area - dem_area) / max(used_area, 1e-9) > 0.2:
+            warnings.append(
+                f"The reservoir surface area used for the bathymetry reconstruction is the "
+                f"published {used_area:.0f} km2, not the {dem_area:.0f} km2 the DEM "
+                f"delineates. The DEM under-resolves this pool — typically a large, "
+                f"shallow, dendritic reservoir on flat terrain at coarse resolution. "
+                f"Source: {bathymetry.get('area_source')}."
+            )
 
     if bathymetry.get("applied"):
         warnings.append(

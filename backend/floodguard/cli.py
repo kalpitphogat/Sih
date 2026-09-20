@@ -21,9 +21,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
 
-_PHASE_OF = {
-    "demo": ("Phase 10", "precomputed demo bundle"),
-}
+_PHASE_OF: dict[str, tuple[str, str]] = {}
 
 
 def _setup_logging(verbose: bool) -> None:
@@ -333,6 +331,19 @@ def cmd_impact(args) -> int:
     return 0
 
 
+def cmd_demo(args) -> int:
+    """Phase 10: preflight and start the full stack on precomputed results."""
+    from floodguard.demo import run_demo
+
+    return run_demo(
+        Path(args.data_dir or DEFAULT_DATA_DIR),
+        api_port=args.api_port,
+        web_port=args.web_port,
+        open_browser=not args.no_browser,
+        check_only=args.check,
+    )
+
+
 def cmd_validate(args) -> int:
     """Phase 4.5: analytical and benchmark verification of the solver."""
     from floodguard.validation.run import run_validation
@@ -412,6 +423,15 @@ def build_parser() -> argparse.ArgumentParser:
     p_impact.add_argument("--run")
     p_impact.add_argument("--data-dir")
 
+    p_demo = sub.add_parser("demo", help="[Phase 10] preflight and start the full stack")
+    p_demo.add_argument("--data-dir")
+    p_demo.add_argument("--api-port", type=int, default=8000)
+    p_demo.add_argument("--web-port", type=int, default=5173)
+    p_demo.add_argument("--no-browser", action="store_true")
+    p_demo.add_argument(
+        "--check", action="store_true", help="run the preflight only and exit"
+    )
+
     p_val = sub.add_parser("validate", help="[Phase 4.5] Ritter/Stoker/lake-at-rest/mass balance")
     p_val.add_argument("--out")
     p_val.add_argument("--quick", action="store_true", help="coarser grids, for a fast check")
@@ -435,6 +455,7 @@ DISPATCH = {
     "simulate": cmd_simulate,
     "report": cmd_report,
     "impact": cmd_impact,
+    "demo": cmd_demo,
 }
 
 

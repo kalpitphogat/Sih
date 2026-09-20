@@ -56,10 +56,28 @@ reservoir:
   initial_level_m: 192.02
   inflow_m3s: 0.0
   spillway_active: false
+  # A 120 m surface model delineates ~212 km2 of a pool that really covers 743.
+  # Hirakud is large, shallow and dendritic on flat deltaic terrain, which is
+  # the case a DSM handles worst: narrow arms fall below the cell size and the
+  # flat water surface confuses the drainage network. Without this override the
+  # bathymetry reconstruction solves for a bed at 41 m MSL — below the dam's own
+  # foundation at 135 m — and FloodGuard refuses it outright rather than
+  # producing storage-dependent numbers from an impossible geometry.
+  area_at_frl_km2: 743.0
+  area_source: >
+    Hirakud Dam Project, Odisha Dept. of Water Resources: reservoir surface area
+    at FRL 630 ft (192.02 m) MSL. Cross-checked against the NRLD-2019
+    reservoir_area_m2 field for OR10HH0003 (743,000,000 m2).
 
 domain:
   reach_length_km: 150.0        # flatter terrain, the wave travels further
   corridor_buffer_km: 12.0      # and spreads much wider than at Tehri
+  # Hirakud impounds 743 km2 reaching roughly 55 km up the Mahanadi, so the
+  # default 40 km upstream buffer truncates the pool and the DEM-derived
+  # storage comes out an order of magnitude short. This is the general lesson
+  # for any large flat-terrain reservoir: the buffer has to contain the whole
+  # impoundment, not just its lower end.
+  reservoir_buffer_km: 85.0
   resolution_m: 30.0
   crs: "EPSG:32645"             # UTM 45N
 

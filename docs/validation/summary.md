@@ -4,7 +4,7 @@ Verification asks whether the code solves the equations it claims to solve.
 These are analytical solutions and closed-form invariants, so the answers are
 exact and the comparison is not a matter of opinion.
 
-**7 of 7 checks passed** (79.8s).
+**7 of 7 checks passed** (20.4s).
 
 | Check | Result | Criterion |
 | --- | --- | --- |

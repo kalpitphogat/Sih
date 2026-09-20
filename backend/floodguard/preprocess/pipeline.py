@@ -222,19 +222,44 @@ def run_preprocess(
             f"The AOI derivation or the dam coordinate is wrong."
         )
 
-    snap_radius = max(3, int(round(300.0 / cell_size_m)))
+    # The search radius must scale with the structure. A 300 m window is fine
+    # for a 575 m dam in a gorge, but Hirakud's embankment is 4.8 km long and
+    # the published coordinate can sit kilometres from the spillway. Searching
+    # too small a window snaps to whatever local drain happens to be nearest,
+    # which at Hirakud produced a 28 km2 "catchment" for a dam that drains
+    # 83,000 km2 — and every reservoir figure downstream of that was nonsense.
+    search_m = max(500.0, (scenario.dam.crest_length_m or 0.0) / 2.0)
+    snap_radius = max(3, int(round(search_m / cell_size_m)))
     snap_row, snap_col, snap_accum = hydro.snap_to_stream(
         conditioned.accumulation, dam_row, dam_col, snap_radius
     )
     snap_distance_m = float(np.hypot(snap_row - dam_row, snap_col - dam_col) * cell_size_m)
     log.info(
-        "dam snapped %.0f m to a cell with %.0f upstream cells", snap_distance_m, snap_accum
+        "dam snapped %.0f m (searched %.0f m) to a cell with %.0f upstream cells",
+        snap_distance_m,
+        search_m,
+        snap_accum,
     )
     if snap_distance_m > 250:
         warnings.append(
-            f"The dam point moved {snap_distance_m:.0f} m when snapped to the stream network. "
-            f"NRLD coordinates are ~30 m precision, so a move this large suggests the "
-            f"published point is on an abutment or the trace found the wrong channel."
+            f"The dam point moved {snap_distance_m:.0f} m when snapped to the stream network "
+            f"(search radius {search_m:.0f} m, scaled to the {scenario.dam.crest_length_m or 0:.0f} m "
+            f"crest length). NRLD coordinates are ~30 m precision, so a move this large "
+            f"suggests the published point is on an abutment rather than the spillway."
+        )
+
+    # Plausibility: a major dam sits on a major river. If the snapped cell
+    # carries a trivial share of the domain's drainage, the snap found a
+    # tributary and everything derived from it will be wrong.
+    max_accum = float(conditioned.accumulation.max())
+    accum_share = snap_accum / max_accum if max_accum > 0 else 0.0
+    if accum_share < 0.05:
+        warnings.append(
+            f"The snapped dam cell carries only {snap_accum:,.0f} upstream cells, "
+            f"{accum_share:.1%} of the largest drainage in the domain. A major dam sits on "
+            f"a major river, so this almost certainly snapped to a tributary rather than "
+            f"the main channel. The reservoir, the routed path and every downstream number "
+            f"should be treated as wrong until the dam coordinate is corrected."
         )
 
     # --- 3. downstream trace + corridor ---
@@ -275,6 +300,18 @@ def run_preprocess(
             scenario.initial_level_m,
             scenario.dam.gross_storage_mcm,
             catchment_mask=catchment,
+            # A reservoir bed cannot lie below the dam's own foundation.
+            min_bed_elevation_m=(
+                scenario.dam.crest_elevation_m - scenario.dam.structural_height_m
+                if scenario.dam.crest_elevation_m is not None
+                else None
+            ),
+            published_area_m2=(
+                scenario.reservoir.area_at_frl_km2 * 1e6
+                if scenario.reservoir.area_at_frl_km2
+                else None
+            ),
+            area_source=scenario.reservoir.area_source,
         )
         warnings.extend(reservoir_geom.warnings)
     except Exception as exc:  # noqa: BLE001
