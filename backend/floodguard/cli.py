@@ -22,7 +22,6 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
 
 _PHASE_OF = {
-    "breach": ("Phase 3", "floodguard.breach"),
     "simulate": ("Phase 4/5", "floodguard.engines + postprocess"),
     "impact": ("Phase 6", "floodguard.impact"),
     "report": ("Phase 10", "PDF report generator"),
@@ -137,6 +136,85 @@ def cmd_preprocess(args) -> int:
     return 0
 
 
+def cmd_breach(args) -> int:
+    """Phase 3: breach parameters, outflow hydrograph, or historical validation."""
+    import json
+
+    from floodguard.breach import parameters as bp
+    from floodguard.breach import routing
+    from floodguard.breach import validation as bv
+
+    if args.validate:
+        print(bv.report())
+        return 0
+
+    scenario = _load_scenario(args.scenario)
+    data_dir = Path(args.data_dir or DEFAULT_DATA_DIR)
+
+    used, predictions, stats = bp.resolve(scenario)
+
+    print(f"Breach parameter predictions for {scenario.dam.name}")
+    print(f"  head over invert {scenario.water_head_m:.1f} m, "
+          f"storage {scenario.dam.gross_storage_mcm:,.0f} MCM, "
+          f"type {scenario.dam.dam_type.value}\n")
+    print(f"  {'MODEL':<38} {'WIDTH m':>10} {'t_f min':>10} {'SLOPE':>7}  APPLIES")
+    print("  " + "-" * 78)
+    for p in predictions:
+        print(f"  {p.model:<38} {p.width_m:>10.0f} {p.formation_time_min:>10.1f} "
+              f"{p.side_slope:>7.1f}  {'yes' if p.applicable else 'NO'}")
+    print()
+    print(f"  Spread: width x{stats['width_m']['spread_ratio']}, "
+          f"formation time x{stats['formation_time_min']['spread_ratio']}")
+    print(f"  {stats['interpretation']}")
+    print()
+    print(f"  USING: {used.model} — width {used.width_m:.0f} m, "
+          f"depth {used.depth_m:.0f} m, t_f {used.formation_time_min:.1f} min")
+    for c in used.caveats:
+        print(f"    - {c}")
+
+    # Routing needs the reservoir curve from Phase 2.
+    pre_path = data_dir / "processed" / scenario.id / "preprocess.json"
+    if not pre_path.exists():
+        print(f"\nNo preprocess.json at {pre_path}; run `floodguard preprocess` to route "
+              f"the hydrograph.", file=sys.stderr)
+        return 0
+
+    from floodguard.preprocess.reservoir import ElevationAreaCapacity
+    import numpy as np
+
+    pre = json.loads(pre_path.read_text(encoding="utf-8"))
+    cd = pre["reservoir"]["curve"]
+    curve = ElevationAreaCapacity(
+        levels_m=np.array(cd["levels_m"]),
+        areas_m2=np.array(cd["areas_km2"]) * 1e6,
+        volumes_m3=np.array(cd["volumes_mcm"]) * 1e6,
+        cell_area_m2=cd["cell_area_m2"],
+        dam_elevation_m=cd["dam_elevation_m"],
+        method=cd["method"],
+    )
+
+    crest = scenario.dam.crest_elevation_m or scenario.initial_level_m
+    hydrograph = routing.route(
+        curve,
+        used,
+        initial_level_m=scenario.initial_level_m,
+        crest_elevation_m=crest,
+        scenario_type=scenario.scenario_type,
+        shape=scenario.breach.shape,
+        growth=scenario.breach.growth,
+        duration_s=scenario.solver.duration_hours * 3600.0,
+        inflow_m3s=scenario.reservoir.inflow_m3s,
+    )
+
+    print()
+    print(hydrograph.summary())
+
+    out = data_dir / "processed" / scenario.id / "hydrograph.json"
+    out.write_text(json.dumps(hydrograph.to_dict(), indent=2), encoding="utf-8")
+    print(f"\nWritten: {out}")
+    return 0
+
+
 def cmd_validate(args) -> int:
     """Phase 4.5: analytical and benchmark verification of the solver."""
     from floodguard.validation.run import run_validation
@@ -179,6 +257,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_pre.add_argument("--scenario", required=True)
     p_pre.add_argument("--data-dir")
 
+    p_breach = sub.add_parser("breach", help="[Phase 3] breach parameters + outflow hydrograph")
+    p_breach.add_argument("--scenario")
+    p_breach.add_argument("--data-dir")
+    p_breach.add_argument(
+        "--validate", action="store_true",
+        help="score the breach models against Teton 1976 and Banqiao 1975",
+    )
+
     p_val = sub.add_parser("validate", help="[Phase 4.5] Ritter/Stoker/lake-at-rest/mass balance")
     p_val.add_argument("--out")
     p_val.add_argument("--quick", action="store_true", help="coarser grids, for a fast check")
@@ -198,6 +284,7 @@ DISPATCH = {
     "verify": cmd_verify,
     "preprocess": cmd_preprocess,
     "validate": cmd_validate,
+    "breach": cmd_breach,
 }
 
 
