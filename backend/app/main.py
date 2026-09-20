@@ -14,7 +14,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import catalog, health, results, simulate
+from app.api import catalog, health, monitoring, results, simulate
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -49,6 +49,7 @@ app.include_router(health.router)
 app.include_router(catalog.router)
 app.include_router(simulate.router)
 app.include_router(results.router)
+app.include_router(monitoring.router)
 
 
 @app.on_event("startup")
